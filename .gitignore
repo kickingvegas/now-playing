@@ -13,5 +13,8 @@ dist/
 # Backup files
 *~
 
+*.info
+docs/html
+
 # Undo-tree save-files
 *.~undo-tree
