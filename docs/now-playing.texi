@@ -1,0 +1,204 @@
+\input texinfo    @c -*- texinfo -*-
+@c %**start of header
+@setfilename now-playing.info
+@settitle Now Playing User Guide
+@documentencoding UTF-8
+@documentlanguage en
+@syncodeindex pg cp
+@paragraphindent none
+@c %**end of header
+
+@copying
+Copyright © 2026 Charles Y@. Choi
+@end copying
+
+@dircategory Emacs misc features
+@direntry
+* Now Playing: (now-playing). A “Now Playing” interface for the macOS Music app.
+@end direntry
+
+@finalout
+@titlepage
+@title Now Playing User Guide
+@subtitle for version 0.9.0-rc.1
+@author Charles Y@. Choi (@email{kickingvegas@@gmail.com})
+@page
+@vskip 0pt plus 1filll
+@insertcopying
+@end titlepage
+
+@contents
+
+@ifnottex
+@node Top
+@top Now Playing User Guide
+
+Version: 0.9.0-rc.1
+
+Copyright © 2026 @w{Charles Y. Choi}
+
+@image{images/now-playing-screenshot,,,,png}
+
+@strong{Now Playing} is an Emacs “now playing” interface for the macOS @uref{https://en.wikipedia.org/wiki/Music_%28app%29, Music app}. @strong{Now Playing} provides a  Transient menu interface (@ref{Top,,,transient,}) to control the @strong{Music app} with the following commands:
+
+@itemize
+@item
+Pause/Play (@code{SPC})
+@item
+Stop (@code{s})
+@item
+Previous (@code{p}) and Next (@code{n}) Track
+@item
+Open (launch) Music app (@code{o})
+@item
+Increase (@code{<up>}) and Decrease (@code{<down>}) volume
+@item
+Refresh current track (@code{r})
+@end itemize
+
+
+If you enjoy using @strong{Now Playing}@comma{} please buy me a coffee to help support its development and maintenance.
+
+@image{images/default-yellow,,,,png}
+
+@uref{https://www.buymeacoffee.com/kickingvegas}
+
+@end ifnottex
+
+@menu
+* Features::
+* Install::
+* Commands::
+
+@detailmenu
+--- The Detailed Node Listing ---
+
+Commands
+
+* Polling the Current Track::
+
+@end detailmenu
+@end menu
+
+@node Features
+@chapter Features
+
+@cindex Features
+
+@itemize
+@item
+Transient menu interface to control @strong{Music app}.
+
+@code{M-x} @code{now-playing-tmenu}
+
+@item
+Display the current playing track in the mini-buffer.
+
+@code{M-x} @code{now-playing-current-track}
+
+@item
+Periodically poll the @strong{Music app} to display the current track in the mini-buffer.
+
+@code{M-x} @code{now-playing-start-polling-current-track}
+
+When polling is turned on@comma{} an in-memory log is kept in the special buffer @code{✱now playing log✱}. It can be opened with the command @code{now-playing-find-log}.
+
+Polling can be stopped with the command @code{now-playing-cancel-polling}.
+
+@item
+Uses Emacs @code{ns-do-applescript} to directly call AppleScript for performance.
+@end itemize
+
+@node Install
+@chapter Install
+
+@cindex Install
+
+@strong{Now Playing} is available to install from MELPA (TBD).
+
+Manual installation can be done by ensuring that @code{now-playing.el} is available in the Emacs @code{load-path} variable.
+
+The Transient interface and commands for polling are auto-loaded so no configuration is necessary. That said@comma{} users might find it convenient to make a keybinding to the Transient menu @code{now-playing-tmenu} as follows:
+
+@lisp
+(keymap-global-set "<f14>" #'now-playing-tmenu)
+@end lisp
+
+The keybinding itself can be set to user preference.
+
+@node Commands
+@chapter Commands
+
+@cindex Commands
+
+The primary interface for @strong{Now Playing} is the Transient menu @code{now-playing-tmenu}. It can be invoked via @code{execute-extended-command} @kbd{M-x}. 
+
+Listed below are commands to both control or get current information from the Music app.
+
+@table @asis
+@item now-playing-tmenu
+Transient menu for @strong{Now Playing}.
+
+@image{images/now-playing-screenshot,,,,png}
+
+@item now-playing-set-state
+Set Music app playback state.
+
+@item now-playing-stop
+Stop Music app.
+
+@item now-playing-next-track
+Next track Music app.
+
+@item now-playing-previous-track
+Previous track Music app.
+
+@item now-playing-get-volume
+Get Music app sound volume.
+
+@item now-playing-set-volume
+Set Music app sound volume to ARG@.
+
+@item now-playing-increase-volume
+Increase Music app sound volume.
+
+@item now-playing-decrease-volume
+Decrease Music app sound volume.
+
+@item now-playing-current-track
+Get current track on Music app.
+
+@item now-playing-launch-music
+Launch Music app.
+@end table
+
+Use the following variable to control sound volume changes.
+
+@table @asis
+@item now-playing-volume-delta
+Change increment for sound volume (default 5).
+@end table
+
+@menu
+* Polling the Current Track::
+@end menu
+
+@node Polling the Current Track
+@section Polling the Current Track
+
+@cindex Polling the Current Track
+
+@strong{Now Playing} provides the capability to periodically log the current track into the special buffer @code{✱now playing log✱}.  The commands that control polling are listed below:
+
+@table @asis
+@item now-playing-start-polling-current-track
+Poll current track with period @code{now-playing-poll-interval}.
+
+@item now-playing-cancel-polling
+Cancel poll timer.
+
+@item
+now-pl
+@end table
+
+@bye
