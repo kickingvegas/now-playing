@@ -20,7 +20,7 @@ Copyright © 2026 Charles Y@. Choi
 @finalout
 @titlepage
 @title Now Playing User Guide
-@subtitle for version 0.9.0-rc.1
+@subtitle for version 0.9.0
 @author Charles Y@. Choi (@email{kickingvegas@@gmail.com})
 @page
 @vskip 0pt plus 1filll
@@ -33,7 +33,7 @@ Copyright © 2026 Charles Y@. Choi
 @node Top
 @top Now Playing User Guide
 
-Version: 0.9.0-rc.1
+Version: 0.9.0
 
 Copyright © 2026 @w{Charles Y. Choi}
 
@@ -57,7 +57,7 @@ Refresh current track (@code{r})
 @end itemize
 
 
-If you enjoy using @strong{Now Playing}@comma{} please buy me a coffee to help support its development and maintenance.
+If you enjoy using @strong{Now Playing}, please buy me a coffee to help support its development and maintenance.
 
 @image{images/default-yellow,,,,png}
 
@@ -69,6 +69,12 @@ If you enjoy using @strong{Now Playing}@comma{} please buy me a coffee to help s
 * Features::
 * Install::
 * Commands::
+* Feedback & Discussion::
+* Sponsorship::
+* About Now Playing::
+* Acknowledgments::
+* Main Index::
+* Variable Index::
 
 @detailmenu
 --- The Detailed Node Listing ---
@@ -101,7 +107,7 @@ Periodically poll the @strong{Music app} to display the current track in the min
 
 @code{M-x} @code{now-playing-start-polling-current-track}
 
-When polling is turned on@comma{} an in-memory log is kept in the special buffer @code{✱now playing log✱}. It can be opened with the command @code{now-playing-find-log}.
+When polling is turned on, an in-memory log is kept in the special buffer @code{✱now playing log✱}. It can be opened with the command @code{now-playing-find-log}.
 
 Polling can be stopped with the command @code{now-playing-cancel-polling}.
 
@@ -118,7 +124,7 @@ Uses Emacs @code{ns-do-applescript} to directly call AppleScript for performance
 
 Manual installation can be done by ensuring that @code{now-playing.el} is available in the Emacs @code{load-path} variable.
 
-The Transient interface and commands for polling are auto-loaded so no configuration is necessary. That said@comma{} users might find it convenient to make a keybinding to the Transient menu @code{now-playing-tmenu} as follows:
+The Transient interface and commands for polling are auto-loaded so no configuration is necessary. That said, users might find it convenient to make a keybinding to the Transient menu @code{now-playing-tmenu} as follows:
 
 @lisp
 (keymap-global-set "<f14>" #'now-playing-tmenu)
@@ -197,8 +203,70 @@ Poll current track with period @code{now-playing-poll-interval}.
 @item now-playing-cancel-polling
 Cancel poll timer.
 
-@item
-now-pl
+@item now-playing-find-log
+Find @code{✱now playing log✱} buffer.
+
+@item now-playing-is-polling-p
+Predicate if logging the current track.
 @end table
+
+Use the following variable to control sound volume changes.
+
+@table @asis
+@item now-playing-poll-interval
+Poll interval (or period) in seconds
+@end table
+
+@node Feedback & Discussion
+@chapter Feedback & Discussion
+
+@cindex Feedback
+Please report any feedback about @strong{Now Playing} to the @uref{https://github.com/kickingvegas/now-playing/issues, issue tracker on GitHub}.
+
+@cindex Discussion
+To participate in general discussion about using @strong{Now Playing}, please join the @uref{https://github.com/kickingvegas/now-playing/discussions, discussion group}.
+
+@node Sponsorship
+@chapter Sponsorship
+
+@cindex Sponsorship
+
+If you enjoy using @strong{Now Playing}, please buy me a coffee to help support its development and maintenance.
+
+@image{images/default-yellow,,,,png}
+
+@uref{https://www.buymeacoffee.com/kickingvegas}
+
+@node About Now Playing
+@chapter About Now Playing
+
+@cindex About Now Playing
+
+@uref{https://github.com/kickingvegas/now-playing, Now Playing} was conceived and crafted by Charles Choi in San Francisco, California.
+
+Thank you for using @strong{Now Playing}.
+
+Always choose love.
+
+@node Acknowledgments
+@chapter Acknowledgments
+
+@cindex Acknowledgments
+
+Thanks to developers responsible for providing @code{ns-do-applescript} in NS Emacs.
+
+@node Main Index
+@chapter Main Index
+
+Index for this user guide.
+
+@printindex cp
+
+@node Variable Index
+@chapter Variable Index
+
+Variables, functions, commands, and menus referenced by this user guide.
+
+@printindex vr
 
 @bye
