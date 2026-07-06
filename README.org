@@ -1,0 +1,82 @@
+* Now Playing
+:PROPERTIES:
+:CUSTOM_ID: now-playing
+:END:
+
+[[file:docs/images/now-playing-screenshot.png]]
+
+*Now Playing* is an Emacs “now playing” interface for the macOS [[https://en.wikipedia.org/wiki/Music_%28app%29][Music app]]. *Now Playing* provides a [[https://docs.magit.vc/transient/][Transient]] menu interface to control the *Music app* with the following commands:
+
+- Pause/Play (~SPC~)
+- Stop (~s~)
+- Previous (~p~) and Next (~n~) Track
+- Open (launch) Music app (~o~)
+- Increase (~<up>~) and Decrease (~<down>~) volume
+- Refresh current track (~r~)
+
+* Features
+:PROPERTIES:
+:CUSTOM_ID: features
+:END:
+
+- Transient menu interface to control *Music app*.
+
+  ~M-x~ ~now-playing-tmenu~
+   
+- Display the current playing track in the mini-buffer.
+  
+  ~M-x~ ~now-playing-current-track~
+
+- Periodically poll the *Music app* to display the current track in the mini-buffer.
+
+  ~M-x~ ~now-playing-start-polling-current-track~
+
+  When polling is turned on, an in-memory log is kept in the special buffer /*now playing log*/. It can be opened with the command ~now-playing-find-log~.
+
+  Polling can be stopped with the command ~now-playing-cancel-polling~.
+  
+- Uses Emacs ~ns-do-applescript~ to directly call AppleScript for performance.
+  
+  
+* Requirements
+:PROPERTIES:
+:CUSTOM_ID: requirements
+:END:
+
+*Now Playing* requires GNU Emacs (NS variant) 30.1+ running on macOS 13 (Ventura) or greater.
+    
+* Install
+:PROPERTIES:
+:CUSTOM_ID: install
+:END:
+
+*Now Playing* is available to install from MELPA (TBD).
+
+Manual installation can be done by ensuring that ~now-playing.el~ is available in the Emacs ~load-path~ variable.
+
+The Transient interface and commands for polling are auto-loaded so no configuration is necessary. That said, users might find it convenient to make a keybinding to the Transient menu ~now-playing-tmenu~ as follows:
+
+#+begin_src elisp :lexical no
+  (keymap-global-set "<f14>" #'now-playing-tmenu)
+#+end_src
+
+The keybinding itself can be set to user preference.
+
+* Sponsorship
+:PROPERTIES:
+:CUSTOM_ID: sponsorship
+:END:
+If you enjoy using *Now Playing*, please buy me a coffee to help support its development and maintenance.
+        
+\\
+[[https://www.buymeacoffee.com/kickingvegas][file:docs/images/default-yellow.png]]
+
+* Acknowledgments
+:PROPERTIES:
+:CUSTOM_ID: acknowledgments
+:END:
+
+Thanks to developers responsible for providing ~ns-do-applescript~ in NS Emacs.
+
+
+#+HTML: <p align='center'>© 2026 Charles Y. Choi</p>
