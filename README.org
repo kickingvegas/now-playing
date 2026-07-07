@@ -3,16 +3,21 @@
 :CUSTOM_ID: now-playing
 :END:
 
+NOTE: THIS PROJECT IS WIP.
+
 [[file:docs/images/now-playing-screenshot.png]]
 
 *Now Playing* is an Emacs “now playing” interface for the macOS [[https://en.wikipedia.org/wiki/Music_%28app%29][Music app]]. *Now Playing* provides a [[https://docs.magit.vc/transient/][Transient]] menu interface to control the *Music app* with the following commands:
 
-- Pause/Play (~SPC~)
-- Stop (~s~)
-- Previous (~p~) and Next (~n~) Track
-- Open (launch) Music app (~o~)
+- Pause/Play (~SPC~, ▶/⏸)
+- Previous (~p~, ⏮) and Next (~n~, ⏭) Track
+- Open (launch) Music app (~o~, ♫)
 - Increase (~<up>~) and Decrease (~<down>~) volume
-- Refresh current track (~r~)
+- Refresh current track (~r~, ⟲)
+
+
+*Now Playing* is intended to be an ancillary interface to the Music app, providing only a subset of controls to it. It has no long-term agenda to be a full-featured client of *Music app*.
+
 
 * Features
 :PROPERTIES:
@@ -22,9 +27,9 @@
 - Transient menu interface to control *Music app*.
 
   ~M-x~ ~now-playing-tmenu~
-   
+
 - Display the current playing track in the mini-buffer.
-  
+
   ~M-x~ ~now-playing-current-track~
 
 - Periodically poll the *Music app* to display the current track in the mini-buffer.
@@ -34,17 +39,17 @@
   When polling is turned on, an in-memory log is kept in the special buffer /*now playing log*/. It can be opened with the command ~now-playing-find-log~.
 
   Polling can be stopped with the command ~now-playing-cancel-polling~.
-  
+
 - Uses Emacs ~ns-do-applescript~ to directly call AppleScript for performance.
-  
-  
+
+
 * Requirements
 :PROPERTIES:
 :CUSTOM_ID: requirements
 :END:
 
 *Now Playing* requires GNU Emacs (NS variant) 30.1+ running on macOS 13 (Ventura) or greater.
-    
+
 * Install
 :PROPERTIES:
 :CUSTOM_ID: install
@@ -67,7 +72,7 @@ The keybinding itself can be set to user preference.
 :CUSTOM_ID: sponsorship
 :END:
 If you enjoy using *Now Playing*, please buy me a coffee to help support its development and maintenance.
-        
+
 \\
 [[https://www.buymeacoffee.com/kickingvegas][file:docs/images/default-yellow.png]]
 

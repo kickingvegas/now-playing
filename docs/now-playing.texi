@@ -43,21 +43,20 @@ Copyright © 2026 @w{Charles Y. Choi}
 
 @itemize
 @item
-Pause/Play (@code{SPC})
+Pause/Play (@code{SPC}@comma{} ▶/⏸)
 @item
-Stop (@code{s})
+Previous (@code{p}@comma{} ⏮) and Next (@code{n}@comma{} ⏭) Track
 @item
-Previous (@code{p}) and Next (@code{n}) Track
-@item
-Open (launch) Music app (@code{o})
+Open (launch) Music app (@code{o}@comma{} ♫)
 @item
 Increase (@code{<up>}) and Decrease (@code{<down>}) volume
 @item
-Refresh current track (@code{r})
+Refresh current track (@code{r}@comma{} ⟲)
 @end itemize
 
+@strong{Now Playing} is intended to be an ancillary interface to the Music app@comma{} providing only a subset of controls to it. It has no long-term agenda to be a full-featured client of @strong{Music app}.
 
-If you enjoy using @strong{Now Playing}, please buy me a coffee to help support its development and maintenance.
+If you enjoy using @strong{Now Playing}@comma{} please buy me a coffee to help support its development and maintenance.
 
 @image{images/default-yellow,,,,png}
 
@@ -107,7 +106,7 @@ Periodically poll the @strong{Music app} to display the current track in the min
 
 @code{M-x} @code{now-playing-start-polling-current-track}
 
-When polling is turned on, an in-memory log is kept in the special buffer @code{✱now playing log✱}. It can be opened with the command @code{now-playing-find-log}.
+When polling is turned on@comma{} an in-memory log is kept in the special buffer @code{✱now playing log✱}. It can be opened with the command @code{now-playing-find-log}.
 
 Polling can be stopped with the command @code{now-playing-cancel-polling}.
 
@@ -124,7 +123,7 @@ Uses Emacs @code{ns-do-applescript} to directly call AppleScript for performance
 
 Manual installation can be done by ensuring that @code{now-playing.el} is available in the Emacs @code{load-path} variable.
 
-The Transient interface and commands for polling are auto-loaded so no configuration is necessary. That said, users might find it convenient to make a keybinding to the Transient menu @code{now-playing-tmenu} as follows:
+The Transient interface and commands for polling are auto-loaded so no configuration is necessary. That said@comma{} users might find it convenient to make a keybinding to the Transient menu @code{now-playing-tmenu} as follows:
 
 @lisp
 (keymap-global-set "<f14>" #'now-playing-tmenu)
@@ -137,7 +136,7 @@ The keybinding itself can be set to user preference.
 
 @cindex Commands
 
-The primary interface for @strong{Now Playing} is the Transient menu @code{now-playing-tmenu}. It can be invoked via @code{execute-extended-command} @kbd{M-x}. 
+The primary interface for @strong{Now Playing} is the Transient menu @code{now-playing-tmenu}. It can be invoked via @code{execute-extended-command} @kbd{M-x}.
 
 Listed below are commands to both control or get current information from the Music app.
 
@@ -147,17 +146,54 @@ Transient menu for @strong{Now Playing}.
 
 @image{images/now-playing-screenshot,,,,png}
 
+The following commands are provided:
+
+@itemize
+@item
+Pause/Play (@code{SPC}@comma{} ▶/⏸)
+@item
+Previous (@code{p}@comma{} ⏮) and Next (@code{n}@comma{} ⏭) Track
+@item
+Open (launch) Music app (@code{o}@comma{} ♫)
+@item
+Increase (@code{<up>}) and Decrease (@code{<down>}) volume
+@item
+Refresh current track (@code{r}@comma{} ⟲)
+@end itemize
+@end table
+
+
+@table @asis
 @item now-playing-set-state
 Set Music app playback state.
+
+@item now-playing-play
+Play Music app.
+
+Note if there is no current track@comma{} this AppleScript command will not succeed. If this occurs@comma{} switch to the Music app to directly select a track to play.
+
+@item now-playing-pause
+Pause Music app.
+
+@item now-playing-playpause
+Toggle play or pause Music app.
+
+Note if there is no current track@comma{} this AppleScript command will not succeed. If this occurs@comma{} switch to the Music app to directly select a track to play.
 
 @item now-playing-stop
 Stop Music app.
 
+Note this command will deselect the current track in the Music app@comma{} making the commands @code{now-playing-play} and @code{now-playing-playpause} ineffective. If this occurs@comma{} switch to the Music app and select a track to resume expected behavior.
+
 @item now-playing-next-track
 Next track Music app.
 
+Note if this command is called when on the last track of the playlist or album will deselect the current track.
+
 @item now-playing-previous-track
 Previous track Music app.
+
+Note if this command is called when on the first track of the playlist or album will deselect the current track.
 
 @item now-playing-get-volume
 Get Music app sound volume.
@@ -224,14 +260,14 @@ Poll interval (or period) in seconds
 Please report any feedback about @strong{Now Playing} to the @uref{https://github.com/kickingvegas/now-playing/issues, issue tracker on GitHub}.
 
 @cindex Discussion
-To participate in general discussion about using @strong{Now Playing}, please join the @uref{https://github.com/kickingvegas/now-playing/discussions, discussion group}.
+To participate in general discussion about using @strong{Now Playing}@comma{} please join the @uref{https://github.com/kickingvegas/now-playing/discussions, discussion group}.
 
 @node Sponsorship
 @chapter Sponsorship
 
 @cindex Sponsorship
 
-If you enjoy using @strong{Now Playing}, please buy me a coffee to help support its development and maintenance.
+If you enjoy using @strong{Now Playing}@comma{} please buy me a coffee to help support its development and maintenance.
 
 @image{images/default-yellow,,,,png}
 
@@ -242,7 +278,7 @@ If you enjoy using @strong{Now Playing}, please buy me a coffee to help support 
 
 @cindex About Now Playing
 
-@uref{https://github.com/kickingvegas/now-playing, Now Playing} was conceived and crafted by Charles Choi in San Francisco, California.
+@uref{https://github.com/kickingvegas/now-playing, Now Playing} was conceived and crafted by Charles Choi in San Francisco@comma{} California.
 
 Thank you for using @strong{Now Playing}.
 
@@ -265,7 +301,7 @@ Index for this user guide.
 @node Variable Index
 @chapter Variable Index
 
-Variables, functions, commands, and menus referenced by this user guide.
+Variables@comma{} functions@comma{} commands@comma{} and menus referenced by this user guide.
 
 @printindex vr
 
