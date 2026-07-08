@@ -28,13 +28,16 @@
 ;; following commands:
 
 ;; - Pause/Play (SPC)
-;; - Stop (s)
 ;; - Previous (p) and Next (n) Track
 ;; - Open (launch) Music app (o)
 ;; - Increase (<up>) and Decrease (<down>) volume
 ;; - Refresh current track (r)
 
 ;; Run the command M-x now-playing-tmenu to launch the Now Playing interface.
+
+;; Now Playing is intended to be an ancillary interface to the Music app,
+;; providing only a subset of controls to it. It has no long-term agenda to be a
+;; full-featured client of Music app.
 
 ;; INSTALL
 
@@ -63,8 +66,11 @@ Now Playing is an Emacs “now playing” interface to the macOS Music app."
 (defvar now-playing--volume nil
   "Music app volume.")
 
-(defvar now-playing--current-track ""
-  "Music app current track.")
+(defvar now-playing--current-track-cache nil
+  "Cache value of Music app current track.")
+
+(defvar now-playing--current-track-log ""
+  "Music app log current track.")
 
 (defcustom now-playing-volume-delta
   5
@@ -119,28 +125,77 @@ restart."
 
 This command will set the next state given the current state."
   (interactive)
-  (let* ((state (now-playing--player-state))
-         (clause (list (cond
-                        ((string-equal state "playing") "playpause")
-                        ((string-equal state "paused") "playpause")
-                        ((string-equal state "stopped") "play")
-                        (t "Unknown")))))
-    (now-playing-get-volume)
+  (let* ((state (now-playing--player-state)))
+    (cond
+     ((string-equal state "playing") (now-playing-pause))
+     ((string-equal state "paused") (now-playing-play))
+     ((string-equal state "stopped") (now-playing-play))
+     (t                                 ; unknown state - throw playpause at it
+      (now-playing-playpause)))))
+
+;;;###autoload (autoload 'now-playing-playpause "now-playing" nil t)
+(defun now-playing-playpause ()
+  "Toggle play or pause Music app."
+  (interactive)
+  (let ((clause '("playpause")))
     (now-playing--run-clause clause)))
 
+;;;###autoload (autoload 'now-playing-play "now-playing" nil t)
+(defun now-playing-play ()
+  "Play Music app.
+
+Note if there is no current track, this AppleScript command will not
+succeed. If this occurs, switch to the Music app to directly select a
+track to play."
+  (interactive)
+  (let ((clause '("play")))
+    (now-playing--run-clause clause)))
+
+;; (defun now-playing-play-first ()
+;;   "Play Music app.
+
+;; Note if there is no current track,
+
+;; Note if the playback state is ‘stopped’, this AppleScript command may
+;; not succeed. If this occurs, switch to the Music app and directly
+;; select a track."
+;;   (interactive)
+
+;;   (if now-playing--current-track-cache
+;;       (let* ((track (car (string-split now-playing--current-track-cache " • ")))
+;;              ;; (clause (list "play" "track" (format "\"%s\"" track)))
+;;              (clause (list "play" "first" "track" "of" "playlist"))
+;;              )
+;;         (now-playing--run-clause clause))
+;;     (error "Unable to play: Open Music app and select track to play")))
+
+;;;###autoload (autoload 'now-playing-pause "now-playing" nil t)
+(defun now-playing-pause ()
+  "Pause Music app."
+  (interactive)
+  (let ((clause '("pause")))
+    (now-playing--run-clause clause)))
+
+;;;###autoload (autoload 'now-playing-stop "now-playing" nil t)
 (defun now-playing-stop ()
-  "Stop Music app."
+  "Stop Music app.
+
+Note this command will deselect the current track in the Music app,
+making the commands `now-playing-play' and `now-playing-playpause'
+ineffective. If this occurs, switch to the Music app and select a track
+to resume expected behavior."
   (interactive)
   (let ((clause '("stop")))
-    (now-playing-get-volume)
     (now-playing--run-clause clause)))
 
+;;;###autoload (autoload 'now-playing-next-track "now-playing" nil t)
 (defun now-playing-next-track ()
   "Next track Music app."
   (interactive)
   (let ((clause '("next" "track")))
     (now-playing--run-clause clause)))
 
+;;;###autoload (autoload 'now-playing-previous-track "now-playing" nil t)
 (defun now-playing-previous-track ()
   "Previous track Music app."
   (interactive)
@@ -152,10 +207,7 @@ This command will set the next state given the current state."
   (interactive)
   (let* ((clause '("get" "sound" "volume"))
          (result (now-playing--run-clause clause))
-         (volume (car result))
-         ;; (volume (if (> (length result) 0)
-         ;;             (string-to-number (car result))))
-         )
+         (volume (car result)))
     (setq now-playing--volume volume)
     volume))
 
@@ -168,23 +220,23 @@ This command will set the next state given the current state."
     (now-playing--run-clause clause)
     (message "Sound Volume: %d" arg)))
 
+;;;###autoload (autoload 'now-playing-increase-volume "now-playing" nil t)
 (defun now-playing-increase-volume ()
   "Increase Music app sound volume."
   (interactive)
-  (if (not now-playing--volume)
-      (now-playing-get-volume))
-  (let* ((new-volume (+ now-playing--volume now-playing-volume-delta))
+  (let* ((current-volume (now-playing-get-volume))
+         (new-volume (+ current-volume now-playing-volume-delta))
          (volume (cond
                   ((<= new-volume 100) new-volume)
                   ((> new-volume 100) 100))))
     (now-playing-set-volume volume)))
 
+;;;###autoload (autoload 'now-playing-decrease-volume "now-playing" nil t)
 (defun now-playing-decrease-volume ()
   "Decrease Music app sound volume."
   (interactive)
-  (if (not now-playing--volume)
-      (now-playing-get-volume))
-  (let* ((new-volume (- now-playing--volume now-playing-volume-delta))
+  (let* ((current-volume (now-playing-get-volume))
+         (new-volume (- current-volume now-playing-volume-delta))
          (volume (cond
                   ((>= new-volume 0) new-volume)
                   ((< new-volume 0) 0))))
@@ -192,16 +244,21 @@ This command will set the next state given the current state."
 
 (defun now-playing--current-track ()
   "Get current track on Music app."
-  (let* ((clause '("if"
-                   "((player" "state" "is" "playing)" "or"
-                   "(player" "state" "is" "paused))"
-                   "then" "name" "of" "current" "track"
-                   "&" "\" • \""
-                   "&" "artist" "of" "current" "track"
-                   "&" "\" • \""
-                   "&" "album" "of" "current" "track"))
-         (result (car (now-playing--run-clause clause))))
-    result))
+
+  (condition-case err
+      (let* ((clause '("name" "of" "current" "track"
+                       "&" "\" • \""
+                       "&" "artist" "of" "current" "track"
+                       "&" "\" • \""
+                       "&" "album" "of" "current" "track"))
+             (result (car (now-playing--run-clause clause))))
+        (if result
+            (setq now-playing--current-track-cache result))
+        result)
+
+    (error
+     (setq now-playing--current-track-cache nil)
+     "No track selected - Please open Music app to select a track")))
 
 ;;;###autoload (autoload 'now-playing-current-track "now-playing" nil t)
 (defun now-playing-current-track ()
@@ -241,8 +298,8 @@ This command will set the next state given the current state."
          (buf (get-buffer-create "*now playing log*")))
     (when track
       (message msg)
-      (unless (string-equal track now-playing--current-track)
-        (setq now-playing--current-track track)
+      (unless (string-equal track now-playing--current-track-log)
+        (setq now-playing--current-track-log track)
         (with-current-buffer buf
           (setq buffer-read-only t)
           (goto-char (point-max))
@@ -313,9 +370,8 @@ The history log of played tracks is stored in the special buffer
                       ((string-equal state "paused") "▶")
                       ((string-equal state "stopped") "▶")
                       (t "Unknown"))))
-    :transient t)
+    :transient nil)
 
-   ("s" "⏹" now-playing-stop :transient t)
    ("n" "⏭" now-playing-next-track :transient t)
    ("<up>" "+" now-playing-increase-volume :transient t)
    ("<down>" "−" now-playing-decrease-volume :transient t)
