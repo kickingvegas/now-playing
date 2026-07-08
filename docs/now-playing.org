@@ -6,7 +6,7 @@
 #+EMAIL: kickingvegas@gmail.com
 #+OPTIONS: ':t toc:t author:t email:t H:4 f:t
 #+LANGUAGE: en
-#+MACRO: version 0.9.0
+#+MACRO: version 0.9.1-rc.1
 #+MACRO: kbd (eval (org-texinfo-kbd-macro $1))
 #+TEXINFO_FILENAME: now-playing.info
 #+TEXINFO_CLASS: casual
@@ -26,14 +26,14 @@ Version: {{{version}}}
 
 *Now Playing* is an Emacs “now playing” interface for the macOS [[https://en.wikipedia.org/wiki/Music_%28app%29][Music app]]. *Now Playing* provides a  Transient menu interface ([[info:transient#Top]]) to control the *Music app* with the following commands:
 
-- Pause/Play (~SPC~)
-- Stop (~s~)
-- Previous (~p~) and Next (~n~) Track
-- Open (launch) Music app (~o~)
+- Pause/Play (~SPC~, ▶/⏸)
+- Previous (~p~, ⏮) and Next (~n~, ⏭) Track
+- Open (launch) Music app (~o~, ♫)
 - Increase (~<up>~) and Decrease (~<down>~) volume
-- Refresh current track (~r~)
+- Refresh current track (~r~, ⟲)
 
-  
+*Now Playing* is intended to be an ancillary interface to the Music app, providing only a subset of controls to it. It has no long-term agenda to be a full-featured client of *Music app*.
+
 #+INCLUDE: "./sponsorship.org"
 
 * Copying
@@ -52,9 +52,9 @@ Copyright © 2026 Charles Y. Choi
 - Transient menu interface to control *Music app*.
 
   ~M-x~ ~now-playing-tmenu~
-   
+
 - Display the current playing track in the mini-buffer.
-  
+
   ~M-x~ ~now-playing-current-track~
 
 - Periodically poll the *Music app* to display the current track in the mini-buffer.
@@ -64,10 +64,10 @@ Copyright © 2026 Charles Y. Choi
   When polling is turned on, an in-memory log is kept in the special buffer ~✱now playing log✱~. It can be opened with the command ~now-playing-find-log~.
 
   Polling can be stopped with the command ~now-playing-cancel-polling~.
-  
+
 - Uses Emacs ~ns-do-applescript~ to directly call AppleScript for performance.
-  
-    
+
+
 * Install
 :PROPERTIES:
 :CUSTOM_ID: install
@@ -82,28 +82,53 @@ The Transient interface and commands for polling are auto-loaded so no configura
 
 #+begin_src elisp :lexical no
   (keymap-global-set "<f14>" #'now-playing-tmenu)
-#+end_src 
+#+end_src
 
 The keybinding itself can be set to user preference.
 
 * Commands
 #+CINDEX: Commands
 
-The primary interface for *Now Playing* is the Transient menu ~now-playing-tmenu~. It can be invoked via ~execute-extended-command~ {{{kbd(M-x)}}}. 
+The primary interface for *Now Playing* is the Transient menu ~now-playing-tmenu~. It can be invoked via ~execute-extended-command~ {{{kbd(M-x)}}}.
 
 Listed below are commands to both control or get current information from the Music app.
 
 - now-playing-tmenu :: Transient menu for *Now Playing*.
-  
+
    [[file:images/now-playing-screenshot.png]]
+
+   The following commands are provided:
+
+    - Pause/Play (~SPC~, ▶/⏸)
+    - Previous (~p~, ⏮) and Next (~n~, ⏭) Track
+    - Open (launch) Music app (~o~, ♫)
+    - Increase (~<up>~) and Decrease (~<down>~) volume
+    - Refresh current track (~r~, ⟲)
+
 
 - now-playing-set-state :: Set Music app playback state.
 
+- now-playing-play :: Play Music app.
+
+    Note if there is no current track, this AppleScript command will not succeed. If this occurs, switch to the Music app to directly select a track to play.
+
+- now-playing-pause :: Pause Music app.
+
+- now-playing-playpause :: Toggle play or pause Music app.
+
+  Note if there is no current track, this AppleScript command will not succeed. If this occurs, switch to the Music app to directly select a track to play.
+
 - now-playing-stop :: Stop Music app.
+
+  Note this command will deselect the current track in the Music app, making the commands ~now-playing-play~ and ~now-playing-playpause~ ineffective. If this occurs, switch to the Music app and select a track to resume expected behavior.
 
 - now-playing-next-track :: Next track Music app.
 
+  Note if this command is called when on the last track of the playlist or album will deselect the current track.
+
 - now-playing-previous-track :: Previous track Music app.
+
+  Note if this command is called when on the first track of the playlist or album will deselect the current track.
 
 - now-playing-get-volume :: Get Music app sound volume.
 
@@ -120,7 +145,7 @@ Listed below are commands to both control or get current information from the Mu
 Use the following variable to control sound volume changes.
 
 - now-playing-volume-delta :: Change increment for sound volume (default 5).
-  
+
 
 ** Polling the Current Track
 #+CINDEX: Polling the Current Track
@@ -128,13 +153,13 @@ Use the following variable to control sound volume changes.
 *Now Playing* provides the capability to periodically log the current track into the special buffer ~✱now playing log✱~.  The commands that control polling are listed below:
 
 - now-playing-start-polling-current-track :: Poll current track with period ~now-playing-poll-interval~.
-  
+
 - now-playing-cancel-polling :: Cancel poll timer.
-  
+
 - now-playing-find-log :: Find ~✱now playing log✱~ buffer.
-  
+
 - now-playing-is-polling-p :: Predicate if logging the current track.
-  
+
 Use the following variable to control sound volume changes.
 
 - now-playing-poll-interval :: Poll interval (or period) in seconds
