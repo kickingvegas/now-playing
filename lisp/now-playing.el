@@ -95,17 +95,20 @@ restart."
   '("tell" "application" "\"Music\"" "to")
   "Music app osascript command initializer.")
 
+(defcustom now-playing-dismiss-menu-for-playpause
+  nil
+  "If non-nil then dismiss `now-playing-tmenu' for `now-playing-set-state'."
+  :type 'boolean
+  :group 'now-playing)
+
 
 ;;; Functions
 
-(defun now-playing-osascript (arg)
-  "Run osascript with ARG."
-  (interactive "sOSAScript: ")
-  (now-playing--osascript arg))
-
-(defun now-playing--osascript (arg)
-  "Process ARG with OSAscript."
-  (process-lines "osascript" "-e" arg))
+(defun now-playing--dismiss-menu-for-playpause ()
+  "Transient state function based on `now-playing-dismiss-menu-for-playpause'."
+  (if now-playing-dismiss-menu-for-playpause
+      (transient--do-return)
+    (transient--do-stay)))
 
 (defun now-playing--run-clause (clause &optional osascript)
   "Execute CLAUSE.
@@ -244,8 +247,7 @@ to resume expected behavior."
 
 (defun now-playing--current-track ()
   "Get current track on Music app."
-
-  (condition-case err
+  (condition-case _err
       (let* ((clause '("name" "of" "current" "track"
                        "&" "\" • \""
                        "&" "artist" "of" "current" "track"
@@ -370,7 +372,7 @@ The history log of played tracks is stored in the special buffer
                       ((string-equal state "paused") "▶")
                       ((string-equal state "stopped") "▶")
                       (t "Unknown"))))
-    :transient nil)
+    :transient now-playing--dismiss-menu-for-playpause)
 
    ("n" "⏭" now-playing-next-track :transient t)
    ("<up>" "+" now-playing-increase-volume :transient t)

@@ -143,6 +143,7 @@ Listed below are commands to both control or get current information from the Mu
 @table @asis
 @item now-playing-tmenu
 Transient menu for @strong{Now Playing}.
+@vindex now-playing-tmenu
 
 @image{images/now-playing-screenshot,,,,png}
 
@@ -166,59 +167,80 @@ Refresh current track (@code{r}, ⟲)
 @table @asis
 @item now-playing-set-state
 Set Music app playback state.
+@vindex now-playing-set-state
 
 @item now-playing-play
 Play Music app.
+@vindex now-playing-play
 
 Note if there is no current track, this AppleScript command will not succeed. If this occurs, switch to the Music app to directly select a track to play.
 
 @item now-playing-pause
 Pause Music app.
+@vindex now-playing-pause
 
 @item now-playing-playpause
 Toggle play or pause Music app.
+@vindex now-playing-playpause
 
 Note if there is no current track, this AppleScript command will not succeed. If this occurs, switch to the Music app to directly select a track to play.
 
 @item now-playing-stop
 Stop Music app.
+@vindex now-playing-stop
 
 Note this command will deselect the current track in the Music app, making the commands @code{now-playing-play} and @code{now-playing-playpause} ineffective. If this occurs, switch to the Music app and select a track to resume expected behavior.
 
 @item now-playing-next-track
 Next track Music app.
+@vindex now-playing-next-track
 
 Note if this command is called when on the last track of the playlist or album will deselect the current track.
 
 @item now-playing-previous-track
 Previous track Music app.
+@vindex now-playing-previous-track
 
 Note if this command is called when on the first track of the playlist or album will deselect the current track.
 
 @item now-playing-get-volume
 Get Music app sound volume.
+@vindex now-playing-get-volume
 
 @item now-playing-set-volume
 Set Music app sound volume to ARG@.
+@vindex now-playing-set-volume
 
 @item now-playing-increase-volume
 Increase Music app sound volume.
+@vindex now-playing-increase-volume
 
 @item now-playing-decrease-volume
 Decrease Music app sound volume.
+@vindex now-playing-decrease-volume
 
 @item now-playing-current-track
 Get current track on Music app.
+@vindex now-playing-current-track
 
 @item now-playing-launch-music
 Launch Music app.
+@vindex now-playing-launch-music
 @end table
 
-Use the following variable to control sound volume changes.
+@subsubheading Command Variables
+
+The following customizable variables can be changed to preference:
 
 @table @asis
 @item now-playing-volume-delta
 Change increment for sound volume (default 5).
+@vindex now-playing-volume-delta
+
+@item now-playing-dismiss-menu-for-playpause
+If non-nil@comma{} then toggling pause/play ▶/⏸ will dismiss the Transient menu
+@code{now-playing-tmenu}.
+@vindex now-playing-dismiss-menu-for-playpause
 @end table
 
 @menu
@@ -235,22 +257,30 @@ Change increment for sound volume (default 5).
 @table @asis
 @item now-playing-start-polling-current-track
 Poll current track with period @code{now-playing-poll-interval}.
+@vindex now-playing-start-polling-current-track
 
 @item now-playing-cancel-polling
 Cancel poll timer.
+@vindex now-playing-cancel-polling
 
 @item now-playing-find-log
 Find @code{✱now playing log✱} buffer.
+@vindex now-playing-find-log
 
 @item now-playing-is-polling-p
 Predicate if logging the current track.
+@vindex now-playing-is-polling-p
 @end table
+
+
+@subsubheading Polling Variable
 
 Use the following variable to control sound volume changes.
 
 @table @asis
 @item now-playing-poll-interval
 Poll interval (or period) in seconds
+@vindex now-playing-poll-interval
 @end table
 
 @node Feedback & Discussion
