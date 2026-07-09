@@ -238,7 +238,7 @@ Change increment for sound volume (default 5).
 @vindex now-playing-volume-delta
 
 @item now-playing-dismiss-menu-for-playpause
-If non-nil@comma{} then toggling pause/play ▶/⏸ will dismiss the Transient menu
+If non-nil, then toggling pause/play ▶/⏸ will dismiss the Transient menu
 @code{now-playing-tmenu}.
 @vindex now-playing-dismiss-menu-for-playpause
 @end table
