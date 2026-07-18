@@ -76,15 +76,23 @@ Copyright © 2026 Charles Y. Choi
 
 *Now Playing* is available to install from MELPA (TBD).
 
-Manual installation can be done by ensuring that ~now-playing.el~ is available in the Emacs ~load-path~ variable.
+For manual installation, ensure that  ~now-playing.el~ is available in the Emacs  ~load-path~ variable.
 
-The Transient interface and commands for polling are auto-loaded so no configuration is necessary. That said, users might find it convenient to make a keybinding to the Transient menu ~now-playing-tmenu~ as follows:
+*Now Playing* by default requires your Emacs session to load the macOS SF Symbols font. Use the convenience command ~now-playing-init~ to setup both SF Symbols and to globally set your keybinding preference to the Transient menu ~now-playing-tmenu~.
+
+Interactively run ~M-x now-playing-init~ or add the following line to your Emacs initialization file:
+
+#+begin_src elisp :lexical no
+  (now-playing-init "<f14>")
+#+end_src
+
+
+Alternately, a direct setting of your keybinding preference to ~now-playing-tmenu~ can be done as follows:
 
 #+begin_src elisp :lexical no
   (keymap-global-set "<f14>" #'now-playing-tmenu)
 #+end_src
 
-The keybinding itself can be set to user preference.
 
 * Commands
 #+CINDEX: Commands
@@ -100,11 +108,11 @@ Listed below are commands to both control or get current information from the Mu
 
    The following commands are provided:
 
-    - Pause/Play (~SPC~, ▶/⏸)
-    - Previous (~p~, ⏮) and Next (~n~, ⏭) Track
-    - Open (launch) Music app (~o~, ♫)
+    - Pause/Play (~SPC~)
+    - Previous (~p~) and Next (~n~) Track
+    - Open (launch) Music app (~o~)
     - Increase (~<up>~) and Decrease (~<down>~) volume
-    - Refresh current track (~r~, ⟲)
+    - Refresh current track (~r~)
 
 
 - now-playing-set-state :: Set Music app playback state.
@@ -163,7 +171,7 @@ The following customizable variables can be changed to preference:
 - now-playing-volume-delta :: Change increment for sound volume (default 5).
   #+VINDEX: now-playing-volume-delta
 
-- now-playing-dismiss-menu-for-playpause :: If non-nil, then toggling pause/play ▶/⏸ will dismiss the Transient menu
+- now-playing-dismiss-menu-for-playpause :: If non-nil, then toggling pause/play will dismiss the Transient menu
    ~now-playing-tmenu~.
    #+VINDEX: now-playing-dismiss-menu-for-playpause
 
