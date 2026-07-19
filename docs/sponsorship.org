@@ -1,4 +1,4 @@
- If you enjoy using *Now Playing*, please buy me a coffee to help support its development and maintenance.
+ If you enjoy using *now-playing.el*, please buy me a coffee to help support its development and maintenance.
 
 [[file:images/default-yellow.png]]
 

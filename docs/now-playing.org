@@ -1,6 +1,6 @@
 #+startup: overview nologdone
 #+startup: showeverything
-#+TITLE: Now Playing User Guide
+#+TITLE: now-playing.el User Guide
 #+SUBTITLE: for version {{{version}}}
 #+AUTHOR: Charles Y. Choi
 #+EMAIL: kickingvegas@gmail.com
@@ -14,9 +14,9 @@
 #+TEXINFO_HEADER: @paragraphindent none
 #+TEXINFO_TITLEPAGE: t
 #+TEXINFO_DIR_CATEGORY: Emacs misc features
-#+TEXINFO_DIR_NAME: Now Playing
+#+TEXINFO_DIR_NAME: now-playing
 #+TEXINFO_DIR_DESC: A “Now Playing” interface for the macOS Music app.
-#+TEXINFO_PRINTED_TITLE: Now Playing User Guide
+#+TEXINFO_PRINTED_TITLE: now-playing.el User Guide
 
 Version: {{{version}}}
 
@@ -24,15 +24,15 @@ Version: {{{version}}}
 
 [[file:images/now-playing-screenshot.png]]
 
-*Now Playing* is an Emacs “now playing” interface for the macOS [[https://en.wikipedia.org/wiki/Music_%28app%29][Music app]]. *Now Playing* provides a  Transient menu interface ([[info:transient#Top]]) to control the *Music app* with the following commands:
+*now-playing.el* is an Emacs [[https://docs.magit.vc/transient/][Transient]] interface for the macOS [[https://en.wikipedia.org/wiki/Music_%28app%29][Music app]]. *now-playing.el* lets you control the *Music app* with the following commands:
 
-- Pause/Play (~SPC~, ▶/⏸)
-- Previous (~p~, ⏮) and Next (~n~, ⏭) Track
-- Open (launch) Music app (~o~, ♫)
+- Pause/Play (~SPC~)
+- Previous (~p~) and Next (~n~) Track
+- Open (launch) Music app (~o~)
 - Increase (~<up>~) and Decrease (~<down>~) volume
-- Refresh current track (~r~, ⟲)
+- Refresh current track (~r~)
 
-*Now Playing* is intended to be an ancillary interface to the Music app, providing only a subset of controls to it. It has no long-term agenda to be a full-featured client of *Music app*.
+*now-playing.el* is an ancillary interface to the *Music app*, providing only a subset of controls to it and no more.
 
 #+INCLUDE: "./sponsorship.org"
 
@@ -61,9 +61,13 @@ Copyright © 2026 Charles Y. Choi
 
   ~M-x~ ~now-playing-start-polling-current-track~
 
-  When polling is turned on, an in-memory log is kept in the special buffer ~✱now playing log✱~. It can be opened with the command ~now-playing-find-log~.
+  When polling is turned on, an in-memory log is kept in the special buffer /*now playing log*/. It can be opened with the command ~now-playing-find-log~.
 
   Polling can be stopped with the command ~now-playing-cancel-polling~.
+
+- Theme support for GUI and TTY display.
+
+  By default *now-playing.el* uses [[https://developer.apple.com/sf-symbols/][SF Symbols]] for icons. This can be reconfigured for Unicode or text display only.
 
 - Uses Emacs ~ns-do-applescript~ to directly call AppleScript for performance.
 
@@ -74,18 +78,17 @@ Copyright © 2026 Charles Y. Choi
 :END:
 #+CINDEX: Install
 
-*Now Playing* is available to install from MELPA (TBD).
+*now-playing.el* is available to install from MELPA (TBD).
 
 For manual installation, ensure that  ~now-playing.el~ is available in the Emacs  ~load-path~ variable.
 
-*Now Playing* by default requires your Emacs session to load the macOS SF Symbols font. Use the convenience command ~now-playing-init~ to setup both SF Symbols and to globally set your keybinding preference to the Transient menu ~now-playing-tmenu~.
+*now-playing.el* by default requires your Emacs session to load the macOS SF Symbols font. Use the convenience command ~now-playing-init~ to setup both SF Symbols and to globally set your keybinding preference to the Transient menu ~now-playing-tmenu~.
 
 Interactively run ~M-x now-playing-init~ or add the following line to your Emacs initialization file:
 
 #+begin_src elisp :lexical no
   (now-playing-init "<f14>")
 #+end_src
-
 
 Alternately, a direct setting of your keybinding preference to ~now-playing-tmenu~ can be done as follows:
 
@@ -97,23 +100,23 @@ Alternately, a direct setting of your keybinding preference to ~now-playing-tmen
 * Commands
 #+CINDEX: Commands
 
-The primary interface for *Now Playing* is the Transient menu ~now-playing-tmenu~. It can be invoked via ~execute-extended-command~ {{{kbd(M-x)}}}.
+The primary interface for *now-playing.el* is the Transient menu ~now-playing-tmenu~. It can be invoked via ~execute-extended-command~ {{{kbd(M-x)}}}.
 
 Listed below are commands to both control or get current information from the Music app.
 
-- now-playing-tmenu :: Transient menu for *Now Playing*.
+- now-playing-tmenu :: Transient menu for *now-playing.el*.
   #+VINDEX: now-playing-tmenu
 
    [[file:images/now-playing-screenshot.png]]
 
    The following commands are provided:
 
-    - Pause/Play (~SPC~)
-    - Previous (~p~) and Next (~n~) Track
-    - Open (launch) Music app (~o~)
-    - Increase (~<up>~) and Decrease (~<down>~) volume
-    - Refresh current track (~r~)
-
+  - Pause/Play (~SPC~)
+  - Previous (~p~) and Next (~n~) Track
+  - Open (launch) Music app (~o~)
+  - Increase (~<up>~) and Decrease (~<down>~) volume
+  - Refresh current track (~r~)
+  - Settings (~,~)
 
 - now-playing-set-state :: Set Music app playback state.
   #+VINDEX: now-playing-set-state
@@ -173,13 +176,24 @@ The following customizable variables can be changed to preference:
 
 - now-playing-dismiss-menu-for-playpause :: If non-nil, then toggling pause/play will dismiss the Transient menu
    ~now-playing-tmenu~.
-   #+VINDEX: now-playing-dismiss-menu-for-playpause
+  #+VINDEX: now-playing-dismiss-menu-for-playpause
+
+- now-playing-menu-theme :: Theme for menu descriptions.
+  #+VINDEX: now-playing-menu-theme
+
+  Customize this variable to a theme of preference:
+
+  - SF Symbols (~:sfsymbols~)
+  - Unicode (~:unicode~)
+  - Text (~:text~)
+
+  Both Unicode and Text allow for usage on TTY frames on systems that do not support SF Symbols.
 
 
 ** Polling the Current Track
 #+CINDEX: Polling the Current Track
 
-*Now Playing* provides the capability to periodically log the current track into the special buffer ~✱now playing log✱~.  The commands that control polling are listed below:
+*now-playing.el* provides the capability to periodically log the current track into the special buffer ~✱now playing log✱~.  The commands that control polling are listed below:
 
 - now-playing-start-polling-current-track :: Poll current track with period ~now-playing-poll-interval~.
   #+VINDEX: now-playing-start-polling-current-track
@@ -204,10 +218,10 @@ Use the following variable to control sound volume changes.
 
 * Feedback & Discussion
 #+CINDEX: Feedback
-Please report any feedback about *Now Playing* to the [[https://github.com/kickingvegas/now-playing/issues][issue tracker on GitHub]].
+Please report any feedback about *now-playing.el* to the [[https://github.com/kickingvegas/now-playing/issues][issue tracker on GitHub]].
 
 #+CINDEX: Discussion
-To participate in general discussion about using *Now Playing*, please join the [[https://github.com/kickingvegas/now-playing/discussions][discussion group]].
+To participate in general discussion about using *now-playing.el*, please join the [[https://github.com/kickingvegas/now-playing/discussions][discussion group]].
 
 * Sponsorship
 #+CINDEX: Sponsorship
@@ -215,12 +229,12 @@ To participate in general discussion about using *Now Playing*, please join the 
 #+INCLUDE: "./sponsorship.org"
 
 
-* About Now Playing
-#+CINDEX: About Now Playing
+* About
+#+CINDEX: About
 
-[[https://github.com/kickingvegas/now-playing][Now Playing]] was conceived and crafted by Charles Choi in San Francisco, California.
+[[https://github.com/kickingvegas/now-playing][now-playing.el]] was conceived and crafted by Charles Choi in San Francisco, California.
 
-Thank you for using *Now Playing*.
+Thank you for using *now-playing.el*.
 
 Always choose love.
 
