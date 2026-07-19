@@ -20,7 +20,7 @@ Copyright © 2026 Charles Y@. Choi
 @finalout
 @titlepage
 @title Now Playing User Guide
-@subtitle for version 0.9.3-rc.1
+@subtitle for version 0.9.3
 @author Charles Y@. Choi (@email{kickingvegas@@gmail.com})
 @page
 @vskip 0pt plus 1filll
@@ -33,7 +33,7 @@ Copyright © 2026 Charles Y@. Choi
 @node Top
 @top Now Playing User Guide
 
-Version: 0.9.3-rc.1
+Version: 0.9.3
 
 Copyright © 2026 @w{Charles Y. Choi}
 
@@ -43,20 +43,20 @@ Copyright © 2026 @w{Charles Y. Choi}
 
 @itemize
 @item
-Pause/Play (@code{SPC}@comma{} ▶/⏸)
+Pause/Play (@code{SPC}, ▶/⏸)
 @item
-Previous (@code{p}@comma{} ⏮) and Next (@code{n}@comma{} ⏭) Track
+Previous (@code{p}, ⏮) and Next (@code{n}, ⏭) Track
 @item
-Open (launch) Music app (@code{o}@comma{} ♫)
+Open (launch) Music app (@code{o}, ♫)
 @item
 Increase (@code{<up>}) and Decrease (@code{<down>}) volume
 @item
-Refresh current track (@code{r}@comma{} ⟲)
+Refresh current track (@code{r}, ⟲)
 @end itemize
 
-@strong{Now Playing} is intended to be an ancillary interface to the Music app@comma{} providing only a subset of controls to it. It has no long-term agenda to be a full-featured client of @strong{Music app}.
+@strong{Now Playing} is intended to be an ancillary interface to the Music app, providing only a subset of controls to it. It has no long-term agenda to be a full-featured client of @strong{Music app}.
 
-If you enjoy using @strong{Now Playing}@comma{} please buy me a coffee to help support its development and maintenance.
+If you enjoy using @strong{Now Playing}, please buy me a coffee to help support its development and maintenance.
 
 @image{images/default-yellow,,,,png}
 
@@ -106,7 +106,7 @@ Periodically poll the @strong{Music app} to display the current track in the min
 
 @code{M-x} @code{now-playing-start-polling-current-track}
 
-When polling is turned on@comma{} an in-memory log is kept in the special buffer @code{✱now playing log✱}. It can be opened with the command @code{now-playing-find-log}.
+When polling is turned on, an in-memory log is kept in the special buffer @code{✱now playing log✱}. It can be opened with the command @code{now-playing-find-log}.
 
 Polling can be stopped with the command @code{now-playing-cancel-polling}.
 
@@ -121,7 +121,7 @@ Uses Emacs @code{ns-do-applescript} to directly call AppleScript for performance
 
 @strong{Now Playing} is available to install from MELPA (TBD).
 
-For manual installation@comma{} ensure that  @code{now-playing.el} is available in the Emacs  @code{load-path} variable.
+For manual installation, ensure that  @code{now-playing.el} is available in the Emacs  @code{load-path} variable.
 
 @strong{Now Playing} by default requires your Emacs session to load the macOS SF Symbols font. Use the convenience command @code{now-playing-init} to setup both SF Symbols and to globally set your keybinding preference to the Transient menu @code{now-playing-tmenu}.
 
@@ -132,7 +132,7 @@ Interactively run @code{M-x now-playing-init} or add the following line to your 
 @end lisp
 
 
-Alternately@comma{} a direct setting of your keybinding preference to @code{now-playing-tmenu} can be done as follows:
+Alternately, a direct setting of your keybinding preference to @code{now-playing-tmenu} can be done as follows:
 
 @lisp
 (keymap-global-set "<f14>" #'now-playing-tmenu)
@@ -180,7 +180,7 @@ Set Music app playback state.
 Play Music app.
 @vindex now-playing-play
 
-Note if there is no current track@comma{} this AppleScript command will not succeed. If this occurs@comma{} switch to the Music app to directly select a track to play.
+Note if there is no current track, this AppleScript command will not succeed. If this occurs, switch to the Music app to directly select a track to play.
 
 @item now-playing-pause
 Pause Music app.
@@ -190,13 +190,13 @@ Pause Music app.
 Toggle play or pause Music app.
 @vindex now-playing-playpause
 
-Note if there is no current track@comma{} this AppleScript command will not succeed. If this occurs@comma{} switch to the Music app to directly select a track to play.
+Note if there is no current track, this AppleScript command will not succeed. If this occurs, switch to the Music app to directly select a track to play.
 
 @item now-playing-stop
 Stop Music app.
 @vindex now-playing-stop
 
-Note this command will deselect the current track in the Music app@comma{} making the commands @code{now-playing-play} and @code{now-playing-playpause} ineffective. If this occurs@comma{} switch to the Music app and select a track to resume expected behavior.
+Note this command will deselect the current track in the Music app, making the commands @code{now-playing-play} and @code{now-playing-playpause} ineffective. If this occurs, switch to the Music app and select a track to resume expected behavior.
 
 @item now-playing-next-track
 Next track Music app.
@@ -245,7 +245,7 @@ Change increment for sound volume (default 5).
 @vindex now-playing-volume-delta
 
 @item now-playing-dismiss-menu-for-playpause
-If non-nil@comma{} then toggling pause/play will dismiss the Transient menu
+If non-nil, then toggling pause/play will dismiss the Transient menu
 @code{now-playing-tmenu}.
 @vindex now-playing-dismiss-menu-for-playpause
 @end table
@@ -297,14 +297,14 @@ Poll interval (or period) in seconds
 Please report any feedback about @strong{Now Playing} to the @uref{https://github.com/kickingvegas/now-playing/issues, issue tracker on GitHub}.
 
 @cindex Discussion
-To participate in general discussion about using @strong{Now Playing}@comma{} please join the @uref{https://github.com/kickingvegas/now-playing/discussions, discussion group}.
+To participate in general discussion about using @strong{Now Playing}, please join the @uref{https://github.com/kickingvegas/now-playing/discussions, discussion group}.
 
 @node Sponsorship
 @chapter Sponsorship
 
 @cindex Sponsorship
 
-If you enjoy using @strong{Now Playing}@comma{} please buy me a coffee to help support its development and maintenance.
+If you enjoy using @strong{Now Playing}, please buy me a coffee to help support its development and maintenance.
 
 @image{images/default-yellow,,,,png}
 
@@ -315,7 +315,7 @@ If you enjoy using @strong{Now Playing}@comma{} please buy me a coffee to help s
 
 @cindex About Now Playing
 
-@uref{https://github.com/kickingvegas/now-playing, Now Playing} was conceived and crafted by Charles Choi in San Francisco@comma{} California.
+@uref{https://github.com/kickingvegas/now-playing, Now Playing} was conceived and crafted by Charles Choi in San Francisco, California.
 
 Thank you for using @strong{Now Playing}.
 
@@ -338,7 +338,7 @@ Index for this user guide.
 @node Variable Index
 @chapter Variable Index
 
-Variables@comma{} functions@comma{} commands@comma{} and menus referenced by this user guide.
+Variables, functions, commands, and menus referenced by this user guide.
 
 @printindex vr
 
