@@ -4,7 +4,7 @@
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 ;; Keywords: tools
-;; Version: 0.9.2
+;; Version: 0.9.3-rc.1
 ;; Package-Requires: ((emacs "30.1") (transient "0.9.0"))
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -32,6 +32,7 @@
 ;; - Open (launch) Music app (o)
 ;; - Increase (<up>) and Decrease (<down>) volume
 ;; - Refresh current track (r)
+;; - Settings (,)
 
 ;; Run the command M-x now-playing-tmenu to launch the Now Playing interface.
 
@@ -41,15 +42,32 @@
 
 ;; INSTALL
 
-;; The Transient interface and commands for polling are auto-loaded so no
-;; configuration is necessary. That said, users might find it convenient to make
-;; a keybinding to the Transient menu `now-playing-tmenu' as follows:
+;; For manual installation, ensure that ‘now-playing.el’ is in the `load-path'.
+
+;; Now Playing by default requires your Emacs session to load the SF Symbols
+;; font. Use the convenience command `now-playing-init' to setup both SF Symbols
+;; and to globally set your keybinding preference to the Transient menu
+;; `now-playing-tmenu'.
+
+;; Interactively run “M-x now-playing-init” or enter the following line in your
+;; Emacs initialization file:
+
+;; (now-playing-init "<f14>")
+
+;; Alternately, a direct setting of your keybinding preference to
+;; `now-playing-tmenu' can be done as follows:
 
 ;; (keymap-global-set "<f14>" #'now-playing-tmenu)
 
-;;; Code:
-(require 'transient)
+;; USAGE
 
+;; Running Now Playing can be done via “M-x now-playing-tmenu” or by using your
+;; preferred keybinding.
+
+
+;;; Code:
+(require 'map)
+(require 'transient)
 
 
 ;;; Variables and Constants
@@ -59,6 +77,11 @@
 
 Now Playing is an Emacs “now playing” interface to the macOS Music app."
   :group 'convenience)
+
+(defun now-playing-customize-group ()
+  "Customize ‘now-playing’ group."
+  (interactive)
+  (customize-group "now-playing"))
 
 (defvar now-playing--poll-timer nil
   "Timer for polling current track.")
@@ -100,6 +123,64 @@ restart."
   "If non-nil then dismiss `now-playing-tmenu' for `now-playing-set-state'."
   :type 'boolean
   :group 'now-playing)
+
+(defcustom now-playing-menu-theme :sfsymbols
+  "Menu theme."
+  :type '(choice (const :tag "SF Symbols" :sfsymbols)
+                 (const :tag "Unicode" :unicode)
+                 (const :tag "Text" :text)))
+
+(defvar now-playing--theme-db '((:play . ((:sfsymbols . "􀊃")
+                                          (:unicode . "▶")
+                                          (:text . "Play")))
+
+                                (:pause . ((:sfsymbols . "􀊅")
+                                           (:unicode . "⏸")
+                                           (:text . "Pause")))
+
+                                (:stop . ((:sfsymbols . "􀛶")
+                                          (:unicode . "⏹")
+                                          (:text . "Stop")))
+
+                                (:previous . ((:sfsymbols . "􀊉")
+                                              (:unicode . "⏮")
+                                              (:text . "Prev")))
+
+                                (:next . ((:sfsymbols . "􀊋")
+                                          (:unicode . "⏭")
+                                          (:text . "Next")))
+
+                                (:volume-up . ((:sfsymbols . "􁜊")
+                                               (:unicode . "+")
+                                               (:text . "Up")))
+
+                                (:volume-down . ((:sfsymbols . "􁜌")
+                                               (:unicode . "−")
+                                               (:text . "Down")))
+
+                                (:refresh . ((:sfsymbols . "􀅈")
+                                             (:unicode . "⟳")
+                                             (:text . "Refresh")))
+
+                                (:music . ((:sfsymbols . "􀑪")
+                                             (:unicode . "♪")
+                                             (:text . "Music")))
+
+                                (:settings . ((:sfsymbols . "􀣋")
+                                             (:unicode . "⚙")
+                                             (:text . "Settings…")))
+
+                                (:dismiss . ((:sfsymbols . "􀀲")
+                                             (:unicode . "×")
+                                             (:text . "Dismiss"))))
+  "Resource DB for themes.")
+
+(defun now-playing--theme-value-for-key (key &optional theme)
+  "Get value for KEY in THEME."
+  (let ((theme (if (not theme)
+                   now-playing-menu-theme
+                 theme)))
+        (map-elt (map-elt now-playing--theme-db key) theme)))
 
 
 ;;; Functions
@@ -363,23 +444,52 @@ The history log of played tracks is stored in the special buffer
                                 (if track
                                     track
                                   ""))))
-   ("p" "⏮" now-playing-previous-track :transient t)
+   ("p" "􀊉" now-playing-previous-track
+    :description (lambda () (now-playing--theme-value-for-key :previous))
+    :transient now-playing--dismiss-menu-for-playpause)
    ("SPC" "Play/Pause" now-playing-set-state
     :description (lambda ()
                    (let* ((state (now-playing--player-state)))
                      (cond
-                      ((string-equal state "playing") "⏸")
-                      ((string-equal state "paused") "▶")
-                      ((string-equal state "stopped") "▶")
+                      ((string-equal state "playing")
+                       (now-playing--theme-value-for-key :pause))
+                      ((string-equal state "paused")
+                       (now-playing--theme-value-for-key :play))
+                      ((string-equal state "stopped")
+                       (now-playing--theme-value-for-key :play))
                       (t "Unknown"))))
     :transient now-playing--dismiss-menu-for-playpause)
 
-   ("n" "⏭" now-playing-next-track :transient t)
-   ("<up>" "+" now-playing-increase-volume :transient t)
-   ("<down>" "−" now-playing-decrease-volume :transient t)
-   ("r" "⟲" now-playing--tmenu-refresh :transient t)
-   ("o" "♫" now-playing-launch-music)
-   ("RET" "Dismiss" transient-quit-all)])
+   ("n" "􀊋" now-playing-next-track
+    :description (lambda () (now-playing--theme-value-for-key :next))
+    :transient now-playing--dismiss-menu-for-playpause)
+   ("<up>" "􁜊" now-playing-increase-volume
+    :description (lambda () (now-playing--theme-value-for-key :volume-up))
+    :transient t)
+   ("<down>" "􁜌" now-playing-decrease-volume
+    :description (lambda () (now-playing--theme-value-for-key :volume-down))
+    :transient t)
+   ("r" "􀅈" now-playing--tmenu-refresh
+    :description (lambda () (now-playing--theme-value-for-key :refresh))
+    :transient now-playing--dismiss-menu-for-playpause)
+   ("o" "􀑪" now-playing-launch-music
+    :description (lambda () (now-playing--theme-value-for-key :music)))
+   ("," "􀣋" now-playing-customize-group
+    :description (lambda () (now-playing--theme-value-for-key :settings)))
+   ("RET" "􀀲" transient-quit-all
+    :description (lambda () (now-playing--theme-value-for-key :dismiss)))])
+
+;;;###autoload (autoload 'now-playing-init "now-playing" nil t)
+(defun now-playing-init (&optional b)
+  "Initialize Now Playing, binding B to `now-playing-tmenu'.
+
+If B is not defined, then the binding <f14> we be used by default."
+  (interactive)
+  (let ((b (if (not b) "<f14>" b)))
+    (if (not (eq system-type 'darwin))
+        (error "Only supported on macOS")
+      (set-fontset-font t '(?􀀀 . ?􏿽) "SF Pro Display")
+      (keymap-global-set b #'now-playing-tmenu))))
 
 (provide 'now-playing)
 ;;; now-playing.el ends here
