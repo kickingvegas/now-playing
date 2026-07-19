@@ -9,13 +9,14 @@ NOTE: THIS PROJECT IS WIP.
 
 *Now Playing* is an Emacs “now playing” interface for the macOS [[https://en.wikipedia.org/wiki/Music_%28app%29][Music app]]. *Now Playing* provides a [[https://docs.magit.vc/transient/][Transient]] menu interface to control the *Music app* with the following commands:
 
-- Pause/Play (~SPC~, ▶/⏸)
-- Previous (~p~, ⏮) and Next (~n~, ⏭) Track
-- Open (launch) Music app (~o~, ♫)
+- Pause/Play (~SPC~)
+- Previous (~p~) and Next (~n~) Track
+- Open (launch) Music app (~o~)
 - Increase (~<up>~) and Decrease (~<down>~) volume
-- Refresh current track (~r~, ⟲)
-
-
+- Refresh current track (~r~)
+- Settings (~,~)
+  
+  
 *Now Playing* is intended to be an ancillary interface to the Music app, providing only a subset of controls to it. It has no long-term agenda to be a full-featured client of *Music app*.
 
 
@@ -57,15 +58,28 @@ NOTE: THIS PROJECT IS WIP.
 
 *Now Playing* is available to install from MELPA (TBD).
 
-Manual installation can be done by ensuring that ~now-playing.el~ is available in the Emacs ~load-path~ variable.
+For manual installation, ensure that  ~now-playing.el~ is available in the Emacs  ~load-path~ variable.
 
-The Transient interface and commands for polling are auto-loaded so no configuration is necessary. That said, users might find it convenient to make a keybinding to the Transient menu ~now-playing-tmenu~ as follows:
+*Now Playing* by default requires your Emacs session to load the macOS SF Symbols font. Use the convenience command ~now-playing-init~ to setup both SF Symbols and to globally set your keybinding preference to the Transient menu ~now-playing-tmenu~.
+
+Interactively run ~M-x now-playing-init~ or add the following line to your Emacs initialization file:
+
+#+begin_src elisp :lexical no
+  (now-playing-init "<f14>")
+#+end_src
+
+
+Alternately, a direct setting of your keybinding preference to ~now-playing-tmenu~ can be done as follows:
 
 #+begin_src elisp :lexical no
   (keymap-global-set "<f14>" #'now-playing-tmenu)
 #+end_src
 
-The keybinding itself can be set to user preference.
+
+* Usage
+
+Running *Now Playing* can be done via ~M-x~ ~now-playing-tmenu~ or by using your preferred keybinding.
+
 
 * Sponsorship
 :PROPERTIES:
