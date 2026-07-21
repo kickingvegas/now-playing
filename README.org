@@ -1,23 +1,19 @@
-* Now Playing
+* now-playing.el
 :PROPERTIES:
 :CUSTOM_ID: now-playing
 :END:
 
-NOTE: THIS PROJECT IS WIP.
-
 [[file:docs/images/now-playing-screenshot.png]]
 
-*Now Playing* is an Emacs “now playing” interface for the macOS [[https://en.wikipedia.org/wiki/Music_%28app%29][Music app]]. *Now Playing* provides a [[https://docs.magit.vc/transient/][Transient]] menu interface to control the *Music app* with the following commands:
+*now-playing.el* is an Emacs [[https://docs.magit.vc/transient/][Transient]] interface for the macOS [[https://en.wikipedia.org/wiki/Music_%28app%29][Music app]]. *now-playing.el* lets you control the *Music app* with the following commands:
 
 - Pause/Play (~SPC~)
 - Previous (~p~) and Next (~n~) Track
 - Open (launch) Music app (~o~)
 - Increase (~<up>~) and Decrease (~<down>~) volume
 - Refresh current track (~r~)
-- Settings (~,~)
   
-  
-*Now Playing* is intended to be an ancillary interface to the Music app, providing only a subset of controls to it. It has no long-term agenda to be a full-featured client of *Music app*.
+*now-playing.el* is an ancillary interface to the *Music app*, providing only a subset of controls to it and no more.
 
 
 * Features
@@ -41,6 +37,10 @@ NOTE: THIS PROJECT IS WIP.
 
   Polling can be stopped with the command ~now-playing-cancel-polling~.
 
+- Theme support for GUI and TTY display.
+  
+  By default *now-playing.el* uses [[https://developer.apple.com/sf-symbols/][SF Symbols]] for icons. This can be reconfigured for Unicode or text display only.
+
 - Uses Emacs ~ns-do-applescript~ to directly call AppleScript for performance.
 
 
@@ -49,18 +49,18 @@ NOTE: THIS PROJECT IS WIP.
 :CUSTOM_ID: requirements
 :END:
 
-*Now Playing* requires GNU Emacs (NS variant) 30.1+ running on macOS 13 (Ventura) or greater.
+*now-playing.el* requires GNU Emacs (NS variant) 30.1+ running on macOS 13 (Ventura) or greater.
 
 * Install
 :PROPERTIES:
 :CUSTOM_ID: install
 :END:
 
-*Now Playing* is available to install from MELPA (TBD).
+*now-playing.el* is available to install from MELPA (TBD).
 
 For manual installation, ensure that  ~now-playing.el~ is available in the Emacs  ~load-path~ variable.
 
-*Now Playing* by default requires your Emacs session to load the macOS SF Symbols font. Use the convenience command ~now-playing-init~ to setup both SF Symbols and to globally set your keybinding preference to the Transient menu ~now-playing-tmenu~.
+*now-playing.el* by default requires your Emacs session to load the macOS SF Symbols font. Use the convenience command ~now-playing-init~ to setup both SF Symbols and to globally set your keybinding preference to the Transient menu ~now-playing-tmenu~.
 
 Interactively run ~M-x now-playing-init~ or add the following line to your Emacs initialization file:
 
@@ -78,14 +78,14 @@ Alternately, a direct setting of your keybinding preference to ~now-playing-tmen
 
 * Usage
 
-Running *Now Playing* can be done via ~M-x~ ~now-playing-tmenu~ or by using your preferred keybinding.
+Running *now-playing.el* can be done via ~M-x~ ~now-playing-tmenu~ or by using your preferred keybinding.
 
 
 * Sponsorship
 :PROPERTIES:
 :CUSTOM_ID: sponsorship
 :END:
-If you enjoy using *Now Playing*, please buy me a coffee to help support its development and maintenance.
+If you enjoy using *now-playing.el*, please buy me a coffee to help support its development and maintenance.
 
 \\
 [[https://www.buymeacoffee.com/kickingvegas][file:docs/images/default-yellow.png]]

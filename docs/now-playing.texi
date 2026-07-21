@@ -1,7 +1,7 @@
 \input texinfo    @c -*- texinfo -*-
 @c %**start of header
 @setfilename now-playing.info
-@settitle Now Playing User Guide
+@settitle now-playing.el User Guide
 @documentencoding UTF-8
 @documentlanguage en
 @syncodeindex pg cp
@@ -14,12 +14,12 @@ Copyright © 2026 Charles Y@. Choi
 
 @dircategory Emacs misc features
 @direntry
-* Now Playing: (now-playing). A “Now Playing” interface for the macOS Music app.
+* now-playing: (now-playing). A “Now Playing” interface for the macOS Music app.
 @end direntry
 
 @finalout
 @titlepage
-@title Now Playing User Guide
+@title now-playing.el User Guide
 @subtitle for version 0.9.4-rc.1
 @author Charles Y@. Choi (@email{kickingvegas@@gmail.com})
 @page
@@ -31,7 +31,7 @@ Copyright © 2026 Charles Y@. Choi
 
 @ifnottex
 @node Top
-@top Now Playing User Guide
+@top now-playing.el User Guide
 
 Version: 0.9.4-rc.1
 
@@ -39,24 +39,24 @@ Copyright © 2026 @w{Charles Y. Choi}
 
 @image{images/now-playing-screenshot,,,,png}
 
-@strong{Now Playing} is an Emacs “now playing” interface for the macOS @uref{https://en.wikipedia.org/wiki/Music_%28app%29, Music app}. @strong{Now Playing} provides a  Transient menu interface (@ref{Top,,,transient,}) to control the @strong{Music app} with the following commands:
+@strong{now-playing.el} is an Emacs @uref{https://docs.magit.vc/transient/, Transient} interface for the macOS @uref{https://en.wikipedia.org/wiki/Music_%28app%29, Music app}. @strong{now-playing.el} lets you control the @strong{Music app} with the following commands:
 
 @itemize
 @item
-Pause/Play (@code{SPC}, ▶/⏸)
+Pause/Play (@code{SPC})
 @item
-Previous (@code{p}, ⏮) and Next (@code{n}, ⏭) Track
+Previous (@code{p}) and Next (@code{n}) Track
 @item
-Open (launch) Music app (@code{o}, ♫)
+Open (launch) Music app (@code{o})
 @item
 Increase (@code{<up>}) and Decrease (@code{<down>}) volume
 @item
-Refresh current track (@code{r}, ⟲)
+Refresh current track (@code{r})
 @end itemize
 
-@strong{Now Playing} is intended to be an ancillary interface to the Music app, providing only a subset of controls to it. It has no long-term agenda to be a full-featured client of @strong{Music app}.
+@strong{now-playing.el} is an ancillary interface to the @strong{Music app}@comma{} providing only a subset of controls to it and no more.
 
-If you enjoy using @strong{Now Playing}, please buy me a coffee to help support its development and maintenance.
+If you enjoy using @strong{now-playing.el}@comma{} please buy me a coffee to help support its development and maintenance.
 
 @image{images/default-yellow,,,,png}
 
@@ -70,7 +70,7 @@ If you enjoy using @strong{Now Playing}, please buy me a coffee to help support 
 * Commands::
 * Feedback & Discussion::
 * Sponsorship::
-* About Now Playing::
+* About::
 * Acknowledgments::
 * Main Index::
 * Variable Index::
@@ -106,9 +106,14 @@ Periodically poll the @strong{Music app} to display the current track in the min
 
 @code{M-x} @code{now-playing-start-polling-current-track}
 
-When polling is turned on, an in-memory log is kept in the special buffer @code{✱now playing log✱}. It can be opened with the command @code{now-playing-find-log}.
+When polling is turned on@comma{} an in-memory log is kept in the special buffer @emph{@strong{now playing log}}. It can be opened with the command @code{now-playing-find-log}.
 
 Polling can be stopped with the command @code{now-playing-cancel-polling}.
+
+@item
+Theme support for GUI and TTY display.
+
+By default @strong{now-playing.el} uses @uref{https://developer.apple.com/sf-symbols/, SF Symbols} for icons. This can be reconfigured for Unicode or text display only.
 
 @item
 Uses Emacs @code{ns-do-applescript} to directly call AppleScript for performance.
@@ -119,11 +124,11 @@ Uses Emacs @code{ns-do-applescript} to directly call AppleScript for performance
 
 @cindex Install
 
-@strong{Now Playing} is available to install from MELPA (TBD).
+@strong{now-playing.el} is available to install from MELPA (TBD).
 
-For manual installation, ensure that  @code{now-playing.el} is available in the Emacs  @code{load-path} variable.
+For manual installation@comma{} ensure that  @code{now-playing.el} is available in the Emacs  @code{load-path} variable.
 
-@strong{Now Playing} by default requires your Emacs session to load the macOS SF Symbols font. Use the convenience command @code{now-playing-init} to setup both SF Symbols and to globally set your keybinding preference to the Transient menu @code{now-playing-tmenu}.
+@strong{now-playing.el} by default requires your Emacs session to load the macOS SF Symbols font. Use the convenience command @code{now-playing-init} to setup both SF Symbols and to globally set your keybinding preference to the Transient menu @code{now-playing-tmenu}.
 
 Interactively run @code{M-x now-playing-init} or add the following line to your Emacs initialization file:
 
@@ -131,8 +136,7 @@ Interactively run @code{M-x now-playing-init} or add the following line to your 
 (now-playing-init "<f14>")
 @end lisp
 
-
-Alternately, a direct setting of your keybinding preference to @code{now-playing-tmenu} can be done as follows:
+Alternately@comma{} a direct setting of your keybinding preference to @code{now-playing-tmenu} can be done as follows:
 
 @lisp
 (keymap-global-set "<f14>" #'now-playing-tmenu)
@@ -143,13 +147,13 @@ Alternately, a direct setting of your keybinding preference to @code{now-playing
 
 @cindex Commands
 
-The primary interface for @strong{Now Playing} is the Transient menu @code{now-playing-tmenu}. It can be invoked via @code{execute-extended-command} @kbd{M-x}.
+The primary interface for @strong{now-playing.el} is the Transient menu @code{now-playing-tmenu}. It can be invoked via @code{execute-extended-command} @kbd{M-x}.
 
 Listed below are commands to both control or get current information from the Music app.
 
 @table @asis
 @item now-playing-tmenu
-Transient menu for @strong{Now Playing}.
+Transient menu for @strong{now-playing.el}.
 @vindex now-playing-tmenu
 
 @image{images/now-playing-screenshot,,,,png}
@@ -167,11 +171,10 @@ Open (launch) Music app (@code{o})
 Increase (@code{<up>}) and Decrease (@code{<down>}) volume
 @item
 Refresh current track (@code{r})
+@item
+Settings (@code{@comma{}})
 @end itemize
-@end table
 
-
-@table @asis
 @item now-playing-set-state
 Set Music app playback state.
 @vindex now-playing-set-state
@@ -180,7 +183,7 @@ Set Music app playback state.
 Play Music app.
 @vindex now-playing-play
 
-Note if there is no current track, this AppleScript command will not succeed. If this occurs, switch to the Music app to directly select a track to play.
+Note if there is no current track@comma{} this AppleScript command will not succeed. If this occurs@comma{} switch to the Music app to directly select a track to play.
 
 @item now-playing-pause
 Pause Music app.
@@ -190,13 +193,13 @@ Pause Music app.
 Toggle play or pause Music app.
 @vindex now-playing-playpause
 
-Note if there is no current track, this AppleScript command will not succeed. If this occurs, switch to the Music app to directly select a track to play.
+Note if there is no current track@comma{} this AppleScript command will not succeed. If this occurs@comma{} switch to the Music app to directly select a track to play.
 
 @item now-playing-stop
 Stop Music app.
 @vindex now-playing-stop
 
-Note this command will deselect the current track in the Music app, making the commands @code{now-playing-play} and @code{now-playing-playpause} ineffective. If this occurs, switch to the Music app and select a track to resume expected behavior.
+Note this command will deselect the current track in the Music app@comma{} making the commands @code{now-playing-play} and @code{now-playing-playpause} ineffective. If this occurs@comma{} switch to the Music app and select a track to resume expected behavior.
 
 @item now-playing-next-track
 Next track Music app.
@@ -245,9 +248,26 @@ Change increment for sound volume (default 5).
 @vindex now-playing-volume-delta
 
 @item now-playing-dismiss-menu-for-playpause
-If non-nil, then toggling pause/play will dismiss the Transient menu
+If non-nil@comma{} then toggling pause/play will dismiss the Transient menu
 @code{now-playing-tmenu}.
 @vindex now-playing-dismiss-menu-for-playpause
+
+@item now-playing-menu-theme
+Theme for menu descriptions.
+@vindex now-playing-menu-theme
+
+Customize this variable to a theme of preference:
+
+@itemize
+@item
+SF Symbols (@code{:sfsymbols})
+@item
+Unicode (@code{:unicode})
+@item
+Text (@code{:text})
+@end itemize
+
+Both Unicode and Text allow for usage on TTY frames on systems that do not support SF Symbols.
 @end table
 
 @menu
@@ -259,7 +279,7 @@ If non-nil, then toggling pause/play will dismiss the Transient menu
 
 @cindex Polling the Current Track
 
-@strong{Now Playing} provides the capability to periodically log the current track into the special buffer @code{✱now playing log✱}.  The commands that control polling are listed below:
+@strong{now-playing.el} provides the capability to periodically log the current track into the special buffer @code{✱now playing log✱}.  The commands that control polling are listed below:
 
 @table @asis
 @item now-playing-start-polling-current-track
@@ -294,30 +314,30 @@ Poll interval (or period) in seconds
 @chapter Feedback & Discussion
 
 @cindex Feedback
-Please report any feedback about @strong{Now Playing} to the @uref{https://github.com/kickingvegas/now-playing/issues, issue tracker on GitHub}.
+Please report any feedback about @strong{now-playing.el} to the @uref{https://github.com/kickingvegas/now-playing/issues, issue tracker on GitHub}.
 
 @cindex Discussion
-To participate in general discussion about using @strong{Now Playing}, please join the @uref{https://github.com/kickingvegas/now-playing/discussions, discussion group}.
+To participate in general discussion about using @strong{now-playing.el}@comma{} please join the @uref{https://github.com/kickingvegas/now-playing/discussions, discussion group}.
 
 @node Sponsorship
 @chapter Sponsorship
 
 @cindex Sponsorship
 
-If you enjoy using @strong{Now Playing}, please buy me a coffee to help support its development and maintenance.
+If you enjoy using @strong{now-playing.el}@comma{} please buy me a coffee to help support its development and maintenance.
 
 @image{images/default-yellow,,,,png}
 
 @uref{https://www.buymeacoffee.com/kickingvegas}
 
-@node About Now Playing
-@chapter About Now Playing
+@node About
+@chapter About
 
-@cindex About Now Playing
+@cindex About
 
-@uref{https://github.com/kickingvegas/now-playing, Now Playing} was conceived and crafted by Charles Choi in San Francisco, California.
+@uref{https://github.com/kickingvegas/now-playing, now-playing.el} was conceived and crafted by Charles Choi in San Francisco@comma{} California.
 
-Thank you for using @strong{Now Playing}.
+Thank you for using @strong{now-playing.el}.
 
 Always choose love.
 
@@ -338,7 +358,7 @@ Index for this user guide.
 @node Variable Index
 @chapter Variable Index
 
-Variables, functions, commands, and menus referenced by this user guide.
+Variables@comma{} functions@comma{} commands@comma{} and menus referenced by this user guide.
 
 @printindex vr
 
