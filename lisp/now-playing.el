@@ -4,7 +4,7 @@
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 ;; Keywords: tools
-;; Version: 0.9.4
+;; Version: 0.9.5-rc.1
 ;; Package-Requires: ((emacs "30.1") (transient "0.9.0"))
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -22,34 +22,29 @@
 
 ;;; Commentary:
 
-;; Now Playing is an Emacs “now playing” interface to the macOS Music app.
-
-;; Now Playing provides a Transient menu interface to control Music app with the
-;; following commands:
+;; `now-playing' is an Emacs Transient interface for the macOS Music app.
+;; `now-playing' lets you control the Music app with the following commands:
 
 ;; - Pause/Play (SPC)
 ;; - Previous (p) and Next (n) Track
 ;; - Open (launch) Music app (o)
 ;; - Increase (<up>) and Decrease (<down>) volume
 ;; - Refresh current track (r)
-;; - Settings (,)
 
-;; Run the command M-x now-playing-tmenu to launch the Now Playing interface.
-
-;; Now Playing is intended to be an ancillary interface to the Music app,
-;; providing only a subset of controls to it. It has no long-term agenda to be a
-;; full-featured client of Music app.
+;; `now-playing' is an ancillary interface to the Music app, providing only a
+;; subset of controls to it and no more.
 
 ;; INSTALL
 
-;; For manual installation, ensure that ‘now-playing.el’ is in the `load-path'.
+;; For manual installation, ensure that ‘now-playing.el’ is available in the
+;; Emacs load-path variable.
 
-;; Now Playing by default requires your Emacs session to load the SF Symbols
-;; font. Use the convenience command `now-playing-init' to setup both SF Symbols
-;; and to globally set your keybinding preference to the Transient menu
+;; `now-playing' will take advantage of the macOS SF Symbols font. Use the
+;; convenience command now-playing-init to setup both SF Symbols and to globally
+;; set your keybinding preference (default <f14>) to the Transient menu
 ;; `now-playing-tmenu'.
 
-;; Interactively run “M-x now-playing-init” or enter the following line in your
+;; Interactively run “M-x now-playing-init” or add the following line to your
 ;; Emacs initialization file:
 
 ;; (now-playing-init "<f14>")
@@ -61,8 +56,8 @@
 
 ;; USAGE
 
-;; Running Now Playing can be done via “M-x now-playing-tmenu” or by using your
-;; preferred keybinding.
+;; Running `now-playing' can be done via “M-x now-playing-tmenu” or by using
+;; your preferred keybinding.
 
 
 ;;; Code:
@@ -200,9 +195,10 @@ restart."
   (let* ((cmdlist (append now-playing--osascript-music-init clause))
          (cmd (string-join cmdlist " ")))
 
-    (if osascript
+    (if (or osascript
+            (not (fboundp 'ns-do-applescript)))
         (process-lines "osascript" "-e" cmd)
-    (list (ns-do-applescript cmd)))))
+      (list (ns-do-applescript cmd)))))
 
 (defun now-playing-set-state ()
   "Set Music app playback state.
@@ -291,7 +287,10 @@ to resume expected behavior."
   (interactive)
   (let* ((clause '("get" "sound" "volume"))
          (result (now-playing--run-clause clause))
-         (volume (car result)))
+         (volume (car result))
+         (volume (if (stringp volume)
+                     (string-to-number volume)
+                   volume)))
     (setq now-playing--volume volume)
     volume))
 
@@ -488,7 +487,8 @@ If B is not defined, then the binding <f14> we be used by default."
   (let ((b (if (not b) "<f14>" b)))
     (if (not (eq system-type 'darwin))
         (error "Only supported on macOS")
-      (set-fontset-font t '(?􀀀 . ?􏿽) "SF Pro Display")
+      (if (and (display-graphic-p) (fboundp 'set-fontset-font))
+          (set-fontset-font t '(?􀀀 . ?􏿽) "SF Pro Display"))
       (keymap-global-set b #'now-playing-tmenu))))
 
 (provide 'now-playing)

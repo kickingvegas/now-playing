@@ -49,7 +49,7 @@
 :CUSTOM_ID: requirements
 :END:
 
-*now-playing.el* requires GNU Emacs (NS variant) 30.1+ running on macOS 13 (Ventura) or greater.
+*now-playing.el* requires GNU Emacs 30.1+ running on macOS 13 (Ventura) or greater.  NS support is recommended for optimal performance.
 
 * Install
 :PROPERTIES:
