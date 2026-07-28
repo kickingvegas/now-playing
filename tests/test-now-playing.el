@@ -26,6 +26,21 @@
 
 (require 'now-playing-test-utils)
 
+(ert-deftest test-now-playing-playpause ()
+  "Test for `now-playing-playpause'."
+  (let ((control "tell application \"Music\" to playpause"))
+    (npt-check-command #'now-playing-playpause control)))
+
+(ert-deftest test-now-playing-play ()
+  "Test for `now-playing-play'."
+  (let ((control "tell application \"Music\" to play"))
+    (npt-check-command #'now-playing-play control)))
+
+(ert-deftest test-now-playing-pause ()
+  "Test for `now-playing-pause'."
+  (let ((control "tell application \"Music\" to pause"))
+    (npt-check-command #'now-playing-pause control)))
+
 (ert-deftest test-now-playing-stop ()
   "Test for `now-playing-stop'."
   (let ((control "tell application \"Music\" to stop"))
@@ -33,15 +48,43 @@
 
 (ert-deftest test-now-playing-next-track ()
   "Test for `now-playing-next-track'."
-
   (let ((control "tell application \"Music\" to next track"))
     (npt-check-command #'now-playing-next-track control)))
 
 (ert-deftest test-now-playing-previous-track ()
   "Test for `now-playing-previous-track'."
-
   (let ((control "tell application \"Music\" to previous track"))
     (npt-check-command #'now-playing-previous-track control)))
+
+(ert-deftest test-now-playing-get-volume ()
+  "Test for `now-playing-get-volume'."
+  (let ((control "tell application \"Music\" to get sound volume"))
+    (npt-check-clause '("get" "sound" "volume") control)))
+
+(ert-deftest test-now-playing-set-volume ()
+  "Test for `now-playing-set-volume'."
+  (let ((control "tell application \"Music\" to set sound volume to 24"))
+    (npt-check-clause '("set" "sound" "volume" "to" "24") control)))
+
+(ert-deftest test-now-playing--current-track ()
+  "Test for `now-playing--current-track'."
+
+  (let ((control "tell application \"Music\" to name of current track \
+& \" • \" \
+& artist of current track \
+& \" • \" \
+& album of current track"))
+    (npt-check-clause '("name" "of" "current" "track"
+                       "&" "\" • \""
+                       "&" "artist" "of" "current" "track"
+                       "&" "\" • \""
+                       "&" "album" "of" "current" "track")
+                      control)))
+
+(ert-deftest test-now-playing--player-state ()
+  "Test for `now-playing--player-state'."
+  (let ((control "tell application \"Music\" to get player state"))
+    (npt-check-clause '("get" "player" "state") control)))
 
 
 (provide 'tests-now-playing)

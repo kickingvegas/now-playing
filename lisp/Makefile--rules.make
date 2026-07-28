@@ -22,7 +22,6 @@
 	$(EXEC_NAME) -Q --batch			\
 $(PACKAGE_PATHS)				\
 $(patsubst %, -l %, $(ELISP_INCLUDES))		\
--l markdown-mode.el				\
 -f batch-byte-compile $<
 
 .el.elt :
@@ -43,7 +42,6 @@ $(PACKAGE_NAME).elc: $(PACKAGE_NAME).el
 $(PACKAGE_PATHS)				\
 $(patsubst %, -l %, $(ELISP_INCLUDES))		\
 $(patsubst %, -l %, $(ELISP_PACKAGES))		\
--l markdown-mode.el				\
 -f batch-byte-compile $<
 
 $(PACKAGE_NAME).elt: $(PACKAGE_NAME).el
