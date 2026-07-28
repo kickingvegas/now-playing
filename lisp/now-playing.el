@@ -1,8 +1,9 @@
-;;; now-playing.el --- macOS Music Player Interface  -*- lexical-binding: t; -*-
+;;; now-playing.el --- Interface for the macOS Music app -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2026  Charles Choi
 
 ;; Author: Charles Choi <kickingvegas@gmail.com>
+;; URL: https://github.com/kickingvegas/now-playing
 ;; Keywords: tools
 ;; Version: 0.9.5-rc.1
 ;; Package-Requires: ((emacs "30.1") (transient "0.9.0"))

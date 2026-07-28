@@ -27,23 +27,39 @@
 (require 'ert)
 (require 'now-playing)
 
-(defun npt-mock-run-clause (fn)
-  "Mock FN to just compute the command string."
-  (cl-letf (((symbol-function 'now-playing-get-volume)
-             (lambda ()
-               25))
+(defun npt-mock-run-command (fn)
+  "Mock FN to run CLAUSE."
+  (cl-letf (((symbol-function 'process-lines)
+             (lambda (program &rest args)
+               (let* ((cmdlist (append (list program) args)))
+                 cmd)))
 
-            ((symbol-function 'now-playing--run-clause)
-             (lambda (clause)
-               (let* ((cmdlist (append now-playing--osascript-music-init clause))
-                      (cmd (string-join cmdlist " ")))
-                 cmd))))
+            ((symbol-function 'ns-do-applescript)
+             (lambda (program)
+               program)))
 
     (funcall fn)))
 
+(defun npt-mock-run-clause (clause)
+  "Mock FN to run CLAUSE."
+  (cl-letf (((symbol-function 'process-lines)
+             (lambda (program &rest args)
+               (let* ((cmdlist (append (list program) args)))
+                 cmd)))
+
+            ((symbol-function 'ns-do-applescript)
+             (lambda (program)
+               program)))
+
+    (now-playing--run-clause clause)))
+
 (defun npt-check-command (fn control)
   "Check that FN issues the correct OSAScript command with CONTROL."
-  (should (string-equal (npt-mock-run-clause fn) control)))
+  (should (string-equal (car (npt-mock-run-command fn)) control)))
+
+(defun npt-check-clause (clause control)
+  "Test CLAUSE in `now-playing--run-clause' with CONTROL."
+  (should (string-equal (car (npt-mock-run-clause clause)) control)))
 
 (provide 'now-playing-test-utils)
 ;;; now-playing-test-utils.el ends here
