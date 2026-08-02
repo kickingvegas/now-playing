@@ -1,3 +1,4 @@
+[[https://melpa.org/#/now-playing][file:https://melpa.org/packages/now-playing-badge.svg]] [[https://stable.melpa.org/#/now-playing][file:https://stable.melpa.org/packages/now-playing-badge.svg]]
 * now-playing.el
 :PROPERTIES:
 :CUSTOM_ID: now-playing
