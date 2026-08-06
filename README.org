@@ -57,18 +57,15 @@
 :CUSTOM_ID: install
 :END:
 
-*now-playing.el* is available to install from MELPA (TBD).
+*now-playing.el* is available to install from [[https://melpa.org/#/now-playing][MELPA]].
 
-For manual installation, ensure that  ~now-playing.el~ is available in the Emacs  ~load-path~ variable.
-
-*now-playing.el* by default requires your Emacs session to load the macOS SF Symbols font. Use the convenience command ~now-playing-init~ to setup both SF Symbols and to globally set your keybinding preference to the Transient menu ~now-playing-tmenu~.
+*now-playing.el* by default will attempt to load the macOS SF Symbols font when running Emacs as a GUI. Use the convenience command ~now-playing-init~ to setup both SF Symbols and to globally set your keybinding preference to the Transient menu ~now-playing-tmenu~.
 
 Interactively run ~M-x now-playing-init~ or add the following line to your Emacs initialization file:
 
 #+begin_src elisp :lexical no
   (now-playing-init "<f14>")
 #+end_src
-
 
 Alternately, a direct setting of your keybinding preference to ~now-playing-tmenu~ can be done as follows:
 

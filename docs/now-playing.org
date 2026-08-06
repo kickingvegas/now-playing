@@ -6,7 +6,7 @@
 #+EMAIL: kickingvegas@gmail.com
 #+OPTIONS: ':t toc:t author:t email:t H:4 f:t
 #+LANGUAGE: en
-#+MACRO: version 1.0.0
+#+MACRO: version 1.0.1-rc.1
 #+MACRO: kbd (eval (org-texinfo-kbd-macro $1))
 #+TEXINFO_FILENAME: now-playing.info
 #+TEXINFO_CLASS: casual
@@ -24,7 +24,7 @@ Version: {{{version}}}
 
 [[file:images/now-playing-screenshot.png]]
 
-*now-playing.el* is an Emacs [[https://docs.magit.vc/transient/][Transient]] interface for the macOS [[https://en.wikipedia.org/wiki/Music_%28app%29][Music app]]. *now-playing.el* lets you control the *Music app* with the following commands:
+*now-playing.el* is an Emacs Transient ([[info:transient#Top]]) interface for the macOS [[https://en.wikipedia.org/wiki/Music_%28app%29][Music app]]. *now-playing.el* lets you control the *Music app* with the following commands:
 
 - Pause/Play (~SPC~)
 - Previous (~p~) and Next (~n~) Track
@@ -87,11 +87,9 @@ Copyright © 2026 Charles Y. Choi
 :END:
 #+CINDEX: Install
 
-*now-playing.el* is available to install from MELPA (TBD).
+*now-playing.el* is available to install from [[https://melpa.org/#/now-playing][MELPA]].
 
-For manual installation, ensure that  ~now-playing.el~ is available in the Emacs  ~load-path~ variable.
-
-*now-playing.el* will take advantage of the macOS SF Symbols font. Use the convenience command ~now-playing-init~ to setup both SF Symbols and to globally set your keybinding preference to the Transient menu ~now-playing-tmenu~.
+*now-playing.el* by default will attempt to load the macOS SF Symbols font when running Emacs as a GUI. Use the convenience command ~now-playing-init~ to setup both SF Symbols and to globally set your keybinding preference (default {{{kbd(<f14>)}}}) to the Transient menu ~now-playing-tmenu~.
 
 Interactively run ~M-x now-playing-init~ or add the following line to your Emacs initialization file:
 
