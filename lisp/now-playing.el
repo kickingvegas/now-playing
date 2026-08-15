@@ -5,7 +5,7 @@
 ;; Author: Charles Choi <kickingvegas@gmail.com>
 ;; URL: https://github.com/kickingvegas/now-playing
 ;; Keywords: tools
-;; Version: 1.0.1
+;; Version: 1.0.2-rc.2
 ;; Package-Requires: ((emacs "30.1") (transient "0.9.0"))
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -296,10 +296,27 @@ to resume expected behavior."
   "Set Music app sound volume to ARG."
   (interactive "nSet Volume (0-100): ")
   (let* ((clause '("set" "sound" "volume" "to"))
-         (clause (append clause (list (number-to-string arg)))))
+         (clause (append clause (list (number-to-string arg))))
+         (bar (now-playing-bin-volume (/ arg 100.0))))
     (setq now-playing--volume arg)
     (now-playing--run-clause clause)
-    (message "Sound Volume: %d" arg)))
+    (let ((message-log-max nil))
+      (message "Sound Volume: %s %d" bar arg))))
+
+(defun now-playing-bin-volume (level)
+  "Determine bin given LEVEL."
+  ;; _ ▁ ▂ ▃ ▄ ▅ ▆ ▇ █
+  (cond
+   ((and (>= level 0.0) (< level 0.05)) " ")
+   ((and (>= level 0.05) (< level 0.125)) "_")
+   ((and (>= level 0.125) (< level 0.25)) "▁")
+   ((and (>= level 0.25) (< level 0.375)) "▂")
+   ((and (>= level 0.375) (< level 0.5)) "▃")
+   ((and (>= level 0.5) (< level 0.625)) "▄")
+   ((and (>= level 0.625) (< level 0.75)) "▆")
+   ((and (>= level 0.75) (< level 0.875)) "▇")
+   ((and (>= level 0.875) (<= level 1.0)) "█")
+   (t "?")))
 
 ;;;###autoload (autoload 'now-playing-increase-volume "now-playing" nil t)
 (defun now-playing-increase-volume ()

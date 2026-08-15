@@ -87,5 +87,27 @@
     (npt-check-clause '("get" "player" "state") control)))
 
 
+(ert-deftest test-now-playing-bin-volume ()
+  "Test for `now-playing-bin-volume'."
+
+  (let ((test-data '((0.01 " ")
+                     (0.05 "_")
+                     (0.125 "▁")
+                     (0.25  "▂")
+                     (0.375  "▃")
+                     (0.5  "▄")
+                     (0.625  "▆")
+                     (0.75  "▇")
+                     (0.875 "█")
+                     (-1.0 "?")
+                     (1.1 "?"))))
+    (mapc (lambda (kp)
+            (let* ((level (nth 0 kp))
+                   (control (nth 1 kp))
+                   (experiment (now-playing-bin-volume level)))
+
+              (should (string-equal experiment control))))
+          test-data)))
+
 (provide 'tests-now-playing)
 ;;; tests-now-playing.el ends here
